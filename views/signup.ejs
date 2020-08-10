@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body{
+            background-image: url('/uploads/loginbackground.jpg');
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
+        
+        .login{
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 7px;
+            padding-bottom: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: fit-content;
+            margin-top: -250px;
+            margin-left: -175px;
+            background-color: #fff;
+            /* border-radius: 5px; */
+            border: 1px solid lightgray;
+        }
+        input{
+            /* padding-right: 70px; */
+            width: 275px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            border: 1px solid lightgray;
+            font-size: 12px;
+            padding-left: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            background-color: rgb(250,250,250);  
+            color: black;
+        }
+        .btn{
+            vertical-align: middle;
+            
+            width: 287px;
+            margin-top: 20px;
+            margin-bottom: 7px;
+            /* background-color: #66FCF1; */
+            background-color: rgb(0,123,255);
+            border: none;
+            border-radius: 4px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            color: ivory;
+            font-weight: bold ;
+            font-size: small;
+        }
+        #logtxt{
+            /* text-align: center; */
+            color: black;
+            font-family: 'Kaushan Script', cursive;
+            font-weight: bold;
+            font-size: 44px;
+            /* font-size: 34px; */
+            margin-top: 20px;
+            margin-bottom: 50px;
+            text-align: center;;
+        }
+        .header{
+            /* position:absolute; */
+            background-color: #FAFAF1;
+            color: black;
+            padding-left: 80px;
+            padding-top: 15px;
+            font-weight: bold;
+            font-size: 27px;
+            margin-right: -50px;
+            margin-top: -10px;
+            margin-left: -10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="header">
+        <a href="/">
+            <span>Inviter</span>
+        </a>    
+    </div> -->
+    <form class="login" action="/users/signup" method="POST">
+        <p id="logtxt">Instaclone</p>
+        <div>
+            <input type="text" placeholder="username" name="username">
+        </div>
+        <div>
+            <input type="password" placeholder="password" name="password">
+        </div>
+        <div>
+            <input type="password" placeholder="retype password" name="retypepassword">
+        </div>
+        <div>
+            <input type="email" placeholder="Email-id" name="emailid">
+        </div>
+        <div>
+            <button class="btn">Submit</button>
+        </div>
+        <p style="color: tomato;">
+
+            <% errors.slice().reverse().forEach(error =>{  %>
+                <%='*'+ error %>
+                <% errors.pop(); %>
+                <br>
+                
+            <%  }) %>
+        </p>
+        <br>
+        <a href="/users/login" style="color: gray;">Already an user?</a>
+    </form>
+    
+</body>
+</html>

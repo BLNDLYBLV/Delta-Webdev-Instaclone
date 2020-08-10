@@ -1,0 +1,33 @@
+<%- include('partials/header') %> 
+<div ondrop="dropping(event)" id="dropzone" class="container my-4 content"> 
+    <div  class="dropzone" style="display: <%= typeof flag != 'undefined' ?  'none' : 'block' %> ;">
+        <div>
+            <img style="width: 50px;height: 50px;margin-top: 30%;" src="https://icon-library.com/images/icon-drag/icon-drag-1.jpg" alt="draganddrop">
+        </div>
+        <div class="dropzonetxt">
+            Drag and drop the file here
+        </div>
+        <form action="/create" method="POST" enctype="multipart/form-data">
+            <input type="file" id="inputimage" name="inputimage"  class="imageinp"/>
+            <button class="btn-success">Submit</button>
+        </form>
+    </div>
+    <div>
+        <%= typeof msg != 'undefined' ? msg : '' %>
+    </div>
+    <br>
+    <div>
+        <img src="<%= typeof file != 'undefined' ? file : ''  %>" alt="" style="width: 500px;height: 500px; margin-bottom: 25px;" class="img-fluid">
+    </div>
+    <div style=" display: <%= typeof flag != 'undefined' ? 'initial' : 'none'  %> ;">
+        <form action="/create/<%= typeof file != 'undefined' ? file  : ''  %>" method="POST">
+            <textarea name="caption" id="" cols="70" rows="1" placeholder="Caption" style="position: relative; top: 7px;"></textarea>
+            <button class="postbtn">
+                Post
+            </button>
+        </form>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+         

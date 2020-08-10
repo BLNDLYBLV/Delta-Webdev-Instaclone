@@ -1,0 +1,227 @@
+<%- include('partials/header') %> 
+
+<% function givename(id){ %>
+  <% for( var x=0;x<names.length;x++){ %>
+  <%      if(names[x].id==id){ %>
+  <%          from=names[x].username;break; %>    
+  <%      } %>   
+  <% }%> 
+<% return from }%>  
+
+<span id="origusername" style="display: none;"> <%= user.id%> </span>
+<div  class="container pt-5" >
+    <div class="row" style="margin-bottom: 45px;">    
+        <div  class="col-4">
+            <img src="<%= ouser.profpic%>" alt="" style="margin-left: 140px ; width: 150px;height: 150px; border-radius: 50%;">
+        </div>
+        <div class="col-8" style="margin-top: 15px;">
+            <div class="usernametxt row">
+                <span id="ousertxt" style="display: none;">
+                  <%=  ouser.id %>
+                </span>  
+                <span>
+                  <%= ouser.username %>
+                </span>
+                <span style="margin-left: 20px;">
+                    <!-- <form style="display: inline-block;" action="/account/edit" method="GET">
+                        <button class="postbtn" style="font-size: small;font-weight: 600;padding:5px; border-radius: 6px;">
+                            Edit profile
+                        </button>
+                    </form> -->
+                    <!-- <button style="border: none;background-color: #F8F8F8 ; font-size: 18px;" class="fa fa-cog " type="button"  data-toggle="modal" data-target="#exampleModalCenter">
+                      
+                    </button> -->
+                    
+                      <%  if(user.followingid.includes(ouser.id)){  %> 
+                        <button id="followingbtn" class="followingbtn" >
+                        Following
+                        <span style="font-size: small;" class="fa fa-check-circle"></span>
+                        </button>
+                      <% }else { %>
+                      
+                        <button id="followbtn" class="followbtn">
+                         Follow  
+                        </button>
+                      <% } %>  
+                    
+                    <form style="display: inline-block;" action="/chat/<%= ouser.id %>" method="POST">
+                        <button class="postbtn" style="font-size: small;font-weight: 600;padding:5px; border-radius: 6px;">
+                            Message
+                        </button>
+                    </form>
+                </span>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+                <div style="margin-left: -15px;" class="col-3">
+                    <strong><%= ouser.ownposts.length %></strong>
+                    posts
+                </div>
+                <div class="col-3">
+                    <button style="border: none;background-color: #F8F8F8 ; font-size: 16px;" type="button"  data-toggle="modal" data-target="#modalfollowing">
+                    
+                    <strong><%= ouser.followingid.length %></strong>
+                    following
+                    </button>
+                </div>
+                <div class="col-3">
+                    <strong><%= ouser.followerid.length %></strong>
+                    followers
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <%= ouser.bio %>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+    <% let i;  %>
+    <% for(i=0;i<posts.length;i++){  %>
+        
+            <div style="margin-bottom: 20px ;" onclick="modalposton('<%= posts[i].id %>')" class="col-4 profhov">
+                <i class="fa fa-heart profheart" style=" color: white; position: absolute;top: 155px;left: 165px;" >
+                    <span style="font-family: Arial, Helvetica, sans-serif;">
+                        <%= posts[i].likesid.length%>
+                    </span>
+                </i>
+                <img class="img-fluid profimg profhov" style="width: 350px;height: 350px;" src="/uploads/<%= posts[i].image  %>" alt="">
+            </div>
+            <div id="modalof<%= posts[i].id %>" class="postmodal" >
+              <div id="modalclose<%= posts[i].id %>" style="color: #fff;font-size: xx-large; position: fixed; top:1.5% ;left: 96%;" class="fa fa-times"></div>
+              <div style="position: fixed;left: 20%;top: 10%; width: 1015px;height: 630px;background-color: white;">
+                <img style=" width: 595px;height: 630px;" src="/uploads/<%= posts[i].image  %>" alt="">
+                <span style="display: inline-block;">
+                  <div style=" margin-left: -5px;width: 421px; border-bottom: 1px solid rgba(0,0,0,0.1); position: absolute;top: 8px;padding: 10px;padding-bottom: 15px;">
+                    <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= ouser.profpic %>" alt="">
+                    <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= ouser.username %> </span>
+                  </div>
+                  <div id="commentbox<%= posts[i].id %>" style="overflow: auto; border-bottom: 1px solid rgba(0,0,0,0.1); height: 380px;width: 421px; margin-left: -5px; position: absolute;top: 80px;padding: 10px;">
+                    <div style="margin-bottom: 15px;">
+                      <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= ouser.profpic %>" alt="">
+                      <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= ouser.username %> </span>
+                      <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= posts[i].caption %> </span>
+                    </div>
+                      <% maxcomm=0; %>
+                      <% commflag=0; %>
+                      <% if(comments!=null){%>
+                          <%comments.forEach(comm=>{ %>    
+                          <% if(comm.postid==posts[i].id ){ %>
+                            <% for( var x=0;x<names.length;x++){ %>
+                            <%      if(names[x].id==comm.from){ %>
+                            <%          from=names[x].username;break; %>    
+                            <%      } %>   
+                            <% }%>  
+                            <div style="margin-left: -5px; margin-bottom: 7px;">
+                              <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
+                              <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
+                            </div>
+                              <% maxcomm++; %>
+                          <% } %>        
+                      <% })} %>    
+                  </div>
+                  <div style="padding: 15px; position: relative;top: 245px; margin-left: -5px; border-bottom: 1px solid rgba(0,0,0,0.1);height: 115px;width: 420px;">
+                    <div id="likeicon<%=posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="padding: 6px; font-size: 27px;" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart"></div>
+                    <div style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
+                    <div style="padding: 6px; font-size: 27px;" class="far fa-paper-plane"></div>
+                    <% if(posts[i].likesid.length==0){ %>
+                      <div><%= posts[i].likesid.length %> likes</div>
+                    <% }else{ %>
+                      <div style="padding-left: 10px;">
+                        Liked by <%= givename(posts[i].likesid[0]) %> <span> <% if(posts[i].likesid.length==2){%><%=','+givename(posts[i].likesid[1])%><% } %> <% if(posts[i].likesid.length>2){%><%=' and '+(posts[i].likesid.length-1)+' others' %><% } %> </span>
+                      </div>
+                    <% } %> 
+                    <div style="position: relative;top: 42px;">
+                      <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= posts[i].id %>">
+                      <button onclick="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 7px;">Post</button>
+                    </div> 
+                  </div>
+                </span>
+              </div>
+            </div>
+        <%}%>
+    </div>        
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">settings</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/users/logout" method="GET">
+              <button style="background-color: white;border: none;">Logout</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="modalfollowing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Following</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+          <% ouser.followingid.forEach(id=>{%>
+
+          
+          <form action="/profile/<%= id %>" method="GET">
+              <button style="background-color: white;border: none;"><%= id %></button>
+          </form>
+          <%})  %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<script src="/oprofile.js"></script>
+<script src="/socket.js"></script>
+<script>
+  // var fileInput = document.getElementById('profpicchange');
+  // var form =document.getElementById('profpicform') ;
+  var postidloc;
+  var closebtn;
+
+  // var handleFiles = () => {
+  //   console.log("works");
+  //   form.submit();
+  // }
+
+
+
+// fileInput.addEventListener("change", handleFiles);
+window.addEventListener('click',(e)=>{
+  // console.log("goes inside");
+  // console.log(e.target);
+  if(e.target.id=='modalof'+postidloc)
+  {
+    var postmodal=document.getElementById('modalof'+postidloc);
+    postmodal.style.display='none';
+  }
+});
+
+function modalposton(postid) {
+  var postmodal=document.getElementById('modalof'+postid);
+  closebtn=document.getElementById('modalclose'+postid);
+  closebtn.addEventListener('click',()=>{
+    // console.log("listens");
+    var postmodal=document.getElementById('modalof'+postidloc);
+    postmodal.style.display='none';
+  });
+  postidloc=postid;
+  postmodal.style.display='block';
+}
+
+</script>
+<%- include('partials/footer') %> 

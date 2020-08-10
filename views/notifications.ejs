@@ -1,0 +1,43 @@
+<%- include('partials/header') %> 
+<% function givename(id){ %>
+    <% for( var x=0;x<names.length;x++){ %>
+    <%      if(names[x].id==id){ %>
+    <%          from=names[x].username;break; %>    
+    <%      } %>   
+    <% }%> 
+  <% return from }%> 
+
+<div class="container" style="max-height: 650px;overflow: auto; margin-top: 20px;border: 1px solid rgb(210,210,210); width: 600px;padding-bottom: 10px;padding-top: 10px; background-color: white;">
+    <div style=" width: 599px;margin-left:-16px ; text-align: center;border-bottom: 1px solid rgb(210,210,210); font-size: 16px;font-weight: 500;padding: 10px;padding-bottom: 20px;">Notifications</div>
+    
+    <% for(var x=notifs.length-1;x>=0;x--){ %>
+        <div style="padding: 15px;padding-left: 5px;">
+            <form style="display: inline-block;" action="/profile/<%= notifs[x].from %>" method="GET">           
+                <button style="border: none;background-color: white;">
+                    <img style="width: 40px;height: 40px;border-radius: 50%;" src="<%= notifs[x].userpic %>" alt="">
+                </button>    
+            </form>  
+            <form style="display: inline-block;" action="/profile/<%= notifs[x].from %>" method="GET">           
+                <button style="border: none;background-color: white;">
+                    <span style=" font-weight: bold;font-size: 13px;"><%= givename(notifs[x].from) %></span>
+                </button>    
+            </form>
+            <form style="display: inline-block;" action="<%= notifs[x].sendto %>">
+                <button style="border: none;background-color: white;">
+                    <div style="text-align: left;padding: 10px;margin-left: -20px; width: 350px; font-weight: normal;font-size: 13px;">
+                        <%= notifs[x].message %>
+                    </div>
+                </button>
+            </form>
+            <form style="display: inline-block;float: right;" action="<%= notifs[x].sendto %>" method="GET">           
+                <button style="width: 50px; border: none;background-color: white;">
+                    <% if(notifs[x].pic!='no'){ %>
+                        <img style="width: 40px;height: 40px;" src="/uploads/<%= notifs[x].pic %>" alt="">
+                    <% } %>
+                </button>    
+            </form> 
+        </div>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %> 

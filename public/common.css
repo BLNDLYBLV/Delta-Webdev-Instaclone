@@ -1,0 +1,354 @@
+.logohw{
+    font-family: 'Kaushan Script', cursive;
+    font-size: xx-large;
+    color: black;
+    padding: 3px;
+    padding-left: 27px;                
+}
+
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    text-decoration: none;
+    color: black;
+}
+
+#labforchange,button,.fas,.fa,.far,.needprofpic:hover{
+    cursor:pointer;
+}
+
+.xtrnav{
+    border-radius: 0;
+    background-color: white;
+    padding: 7px;
+}
+.navbarbtn{
+    border: none;
+    padding: 13px ;
+    background-color: white;
+}
+.fa{
+    font-size: x-large;
+}
+.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+body{
+    padding-top: 45px;
+    background-color: #F8F8F8;
+}
+
+.feedcomminp{
+    padding-left: 10px;
+    border: none;
+    width: 550px;
+}
+
+.feedcomminp:focus{
+    outline: none;
+}
+
+.profpic{
+    width: 30px;
+    height: 30px;
+}
+.searchinput{
+    font-size: small;
+    padding: 3px;
+    width: 200px;
+}
+.searchbtn{
+    font-size: small;
+    border: none;
+    border-radius: 20px;
+    padding: 4.5px;
+}
+.content{
+    background-color: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+/* .imageinp{
+    display: none;
+} */
+.dropzone{
+    width: 500px;
+    height: 400px;
+    border: 2px dotted rgba(0,0 ,0, 0.3);
+    text-align: center;
+    vertical-align: middle;
+    /* align-self: center; */
+    margin: auto;
+   
+}
+
+.dropzonetxt{
+    /* margin-top: 35%; */
+    font-size: large;
+}
+.postbtn{
+    border: none;
+    
+}
+
+.usernametxt{
+    font-size: x-large;
+    font-weight: 200;
+}
+
+.profheart{
+    opacity: 0;
+}
+
+.profhov:hover .profheart .profimg{
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    filter: brightness(50%);
+    opacity: 1;
+}
+
+/* .profimg:hover .profheart{
+    filter: brightness(100%);
+    opacity: 1;
+} */
+/* .profhov:hover .profimg{
+     filter: brightness(50%); 
+} */
+
+.friendrow:hover{
+    background-color: rgba(0,0,0,0.01   );
+    margin-left: 0px;
+    margin-right: 0px ;
+}
+
+#sendinp:focus{
+    outline: none;
+}
+#sendbtn:focus{
+    outline: none;
+}
+
+#sendinp{
+    width: 630px;
+    height: 35px;
+    padding-left: 20px; 
+    margin-top: 6px;
+    margin-left: 20px;
+    border: 1px solid lightgray;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+#sendbtn{
+    color: rgb(0,149,246);
+    font-weight: 500;
+    border-left: none;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray; 
+    background-color: white;
+    height: 35px;
+    position: relative;
+    left: -5px;
+    padding-right:20px ;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+.post{
+    background-color: white;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 650px;
+    display: inline-block;
+    text-align: left;
+    border-top: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+}
+.postprofpic{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 10px;
+}
+.likebar{
+    width: 650px;
+    background-color: white;
+    display: inline-block;
+    text-align: left;
+    padding: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+.dropdown {
+    position: absolute;  
+    background-color: white;
+    /* display: none; */
+    width: 300px ;
+}
+.activitydropdown{
+    display: none;
+    position: absolute;
+    max-height: 500px;  
+    background-color: white;
+    /* display: none; */
+    width: 500px ;
+}
+.ddelement{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 5px ;
+    background-color: white;
+    border: none;
+}
+.activitydropdown:focus + .ddelement {
+    display: block;
+}
+.ddelement:focus + .ddelement {
+    display: block;
+    
+}
+input:focus + .dropdown {
+    display: block;
+    border: 1px solid lightgrey;  
+
+}
+.navbarbtnact:focus + .activitydropdown {
+    display: block;
+    border: 1px solid lightgrey;  
+
+}
+
+.searchpic{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.searchname{
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 10px;
+    /* position: relative;
+    top: -6px; */
+}
+
+.followingbtn{
+    margin-right: 10px; 
+    padding: 25px; 
+    font-size: medium;
+    font-weight: 600;
+    padding:4px;
+    padding-left: 8px;
+    padding-right: 8px; 
+    border-radius: 6px; 
+    border: 1px solid lightgray;
+}
+
+button:focus{
+    outline: none;
+}
+
+.followbtn{
+    margin-right: 10px; 
+    padding: 25px; 
+    font-size: medium;
+    font-weight: 600;
+    padding:3px;
+    padding-left: 8px;
+    padding-right: 8px; 
+    border-radius: 4px;
+    border: none;
+    color: white; 
+    background-color: rgb(0,149,246);
+}
+
+.fas{
+    animation-name: likepop;
+    animation-duration: 0.1s;
+    color: rgb(250, 0, 54);
+}
+
+.fas:focus,.far:focus{
+    border: none;
+    outline: none;
+}
+
+@keyframes likepop{
+    from{font-size: 5px;}
+    to {font-size: 25px;}
+}
+
+.addmodal{
+    background-color: rgba(0,0 ,0, 0);
+    /* background-color: rgba(255,255,255, 1); */
+}
+
+.omsg{
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    background-color: white;
+    width: max-content;
+    max-width: 350px;
+}
+.mymsg{
+    overflow: visible;
+    position: relative;
+    /* text-align: right; */
+    /* float: inline-end; */
+    display: block;
+    /* float: right; */
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgba(0,0 ,0, 0.1);
+    width: max-content;
+    max-width: 350px;
+    min-height: fit-content;
+}
+#chatbox{
+    overflow: scroll;    
+}
+
+.fix-top{
+    position: fixed;
+    left:0;
+    top:0;
+    width: 100%;
+    z-index: 1;
+    display: block;
+    overflow: hidden;
+}
+.gotoprofbtn{
+    border: none;
+    background-color: white;
+    /* float: left; */
+    display: inline;
+}
+
+.navbarbtn:focus{
+    outline: none;
+}
+.postmodal{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0 ,0, 0.5) ;
+    display: none;
+    /* filter: brightness(50%); */
+}

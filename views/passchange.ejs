@@ -1,0 +1,41 @@
+<%- include('partials/header') %> 
+
+<div class="container" style="margin-top: 30px;background-color: white;">
+    <div class="row">
+        <div class="col-3" style="border: 1px solid rgba(0,0,0,0.1);">
+            <form action="/account/edit" method="GET">
+                <button style="background-color: white;border: none;position: relative;left: -12px;top: 15px; padding: 10px;padding-left: 40px;">    
+                    <div style="">
+                        Edit profile
+                    </div>
+                </button>
+            </form>
+            <form action="/account/password" method="GET">
+                <!-- <button  style="position: relative;left: -20px; padding: 10px;padding-left: 50px; margin-bottom: 15px;  background-color: white;border: none;"></button>     -->
+                <button style="border: none;margin-bottom: 15px;background-color: white; padding: 10px;padding-left: 40px;margin-left: -15px; margin-top: 20px; border-left: 3px solid black;">   
+                    Change password
+                </button>
+            </form>
+        </div>
+        <div class="col-9 row" style="border-top: 1px solid rgba(0,0,0,0.1);border-right: 1px solid rgba(0,0,0,0.1);border-bottom: 1px solid rgba(0,0,0,0.1);position: relative; left: -1px;">
+            <div class="col-4" style="margin-top: 20px;">
+                <div style="padding-left: 100px;padding-right: 50px;width: 100%;text-align: right;   margin-right: 50px;margin-bottom: 24px; " >Old password:</div>
+                <div style="padding-left: 100px;width: 100%; text-align: right; padding-right: 50px; margin-right: 50px;margin-bottom: 24px; " >New password:</div>
+                <div style="padding-left: 100px;width: 100%; text-align: right; padding-right: 50px; margin-right: 50px;margin-bottom: 24px; " >Confirm new password:</div>                                
+            </div>
+            <div class="col-8" style="margin-top: 20px;margin-bottom: 20px;">
+                <form action="/account/changepass" method="POST">
+                    <input type="text"  style="padding: 4px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.3); border-radius: 3px;" name="username" id="">
+                    <br>
+                    <input type="text"  style="padding: 4px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.3); border-radius: 3px;"  name="bio">
+                    <br>
+                    <input type="text"   style="padding: 4px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.3); border-radius: 3px;" name="email">
+                    <button class="btn-success" style="margin-top: 10px ;border: none;padding: 4px; display: block;margin-left: auto;position: relative; right: 330px;">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer') %> 

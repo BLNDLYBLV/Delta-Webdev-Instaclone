@@ -1,0 +1,124 @@
+<%- include('partials/header') %> 
+<% var i; %>
+<% var maxcomm,commflag=0,username; %>
+
+<% function givename(id){ %>
+    <% for( var x=0;x<names.length;x++){ %>
+    <%      if(names[x].id==id){ %>
+    <%          from=names[x].username;break; %>    
+    <%      } %>   
+    <% }%> 
+<% return from }%>
+
+<% for(i=posts.length-1;i>=0;i--){ %>
+    <% for( var x=0;x<names.length;x++){ %>
+    <%      if(names[x].id==posts[i].ownerid){ %>
+    <%          username=names[x].username;break; %>    
+    <%      } %>   
+    <% }%> 
+<div class="container" style="overflow: hidden;">
+<div class="container" style="text-align: center;">
+    <div class="post" >
+        <form class="gotoprofbtn" action="/profile/<%= posts[i].ownerid %>" method="GET">
+            <button class="gotoprofbtn">
+                <img id="postprofpic<%= posts[i].id %>" class="postprofpic" src="<%= posts[i].userpic %>" alt="">
+            </button>    
+        </form>
+        <form style="position: relative;left: -10px;" class="gotoprofbtn" action="/profile/<%= posts[i].ownerid %>" method="GET">
+            <button class="gotoprofbtn">
+                <strong style="font-size: small;"><%= username %></strong>
+            </button>       
+        </form>
+        <div onclick="postmodalon('<%= posts[i].id %>')" style="float: right;margin-right: 15px;margin-top: 24px;font-weight: 501; font-size: 14px;" class="far fa-ellipsis-h "></div>
+        <div id="postmodal<%= posts[i].id %>" class="postmodal">
+            <div style="width: 400px;height: 120px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                <div onclick="closebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
+                <hr style="margin-top: 35px;margin-bottom: 0px;">
+                <form action="/p/<%= posts[i].id %>">
+                <button style="border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Go to post</button>
+                </form>
+                <hr style="margin-top: 0px;margin-bottom: 0px;">
+                <form action="/p/<%= posts[i].id %>">
+                <button style="border: none;width: 390px;margin-left: 5px; background-color: white;text-align: center;margin-top: 7px;">Unfollow</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <img ondblclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="width: 650px;height: 600px;" src="/uploads/<%= posts[i].image %>" alt="">
+    </div>
+    <div class="likebar" >
+        <button id="likeicon<%= posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
+        <button class="far fa-comment" onclick="icontoinput('<%= posts[i].id %>')" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
+        <form style="display: inline-block;margin-left: -3px;" action="/chat" method="GET">
+            <button class="far fa-paper-plane" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
+        </form>
+        <div style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">
+            <strong id="likesnum<%= posts[i].id %>"><%= posts[i].likesid.length + " likes" %></strong>
+        </div>
+        <div style="padding-left: 8px;">
+            <form style="display: inline-block;margin-left: -5px;" action="/profile/<%= posts[i].ownerid %>">
+                <button style="border: none;background-color:white ;padding-right: 0px;">
+                    <strong><%= givename(posts[i].ownerid)+'' %></strong>
+                </button>
+                <span style="font-size: 14px;font-weight: 400;"><%= "" + posts[i].caption %></span>
+
+            </form>
+            
+        </div>
+        <div style="margin-top: 5px;" id="commentbox<%= posts[i].id %>" class="commentbox">
+            <% maxcomm=0; %>
+            <% commflag=0 %>
+            <% if(comments!=null){%>
+                <%comments.forEach(comm=>{ %>    
+                <% if(comm.postid==posts[i].id ){ %>
+                    <% if(maxcomm<2){ %>
+                    <div style="margin-left: 8px; font-size: 15px;"><form style="display: inline-block;margin-left: -5px;" action="/profile/<%= comm.from %>"><button style="border: none;background-color:white ;"><strong><%= givename(comm.from)+'  ' %></strong></button></form><span style="font-size: 14;font-weight: 350;" ><%= comm.comment %></span></div>
+                    <% maxcomm++; %>
+                <% }else if(commflag==0){ %>
+                    <a style="margin-left: 7px; text-decoration: underline;" href="/p/<%= posts[i].id %>">View all comments</a>
+                    <% commflag++; %>
+                <% }} %>        
+            <% })} %>    
+        </div>
+    </div>
+    <div class="likebar"  style="padding:10px;" >
+    <form onsubmit="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>');return false;">
+        <input id="feedcomminp<%= posts[i].id %>"  class="feedcomminp" placeholder="Add comment" type="text">
+        <input type="submit" style="display: none;">
+        <button onclick="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 17px;">Post</button>
+    </form>
+    </div>
+</div>    
+</div>
+<% } %>
+<div  style="margin-left: 700px;">
+    <!-- s<div style="font-size: 150px;font-weight: 600;color: white;border: 3px solid black;border-radius: 50%; " class="far fa-circle"></div> -->
+    <div style="margin-top: 50px;margin-bottom: 50px; font-size: larger;color: black;margin-left: -20px;">That's all for today</div>
+
+</div>
+<script src="/socket.js"></script>
+<script>
+    var postid;
+    function icontoinput(postid){
+        var comminp=document.getElementById('feedcomminp'+postid);
+        comminp.focus();
+    }
+    function postmodalon(pstid){
+        postid=pstid;
+        var modal=document.getElementById('postmodal'+pstid);
+        modal.style.display='block';
+    }
+    function closebtn(){
+        var modal=document.getElementById('postmodal'+postid);
+        modal.style.display='none';
+    }
+    window.addEventListener('click',(e)=>{
+      if(e.target.id=='postmodal'+postid)
+      {
+        var postmodal=document.getElementById('postmodal'+postid);
+        postmodal.style.display='none';
+      }
+    });
+</script>
+<%- include('partials/footer') %> 

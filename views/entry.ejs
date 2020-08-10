@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./">
+
+    <style>
+        .btn-grad {background-image: linear-gradient(to right, #56CCF2 0%, #2F80ED 51%, #56CCF2 100%)}
+        
+        body{
+            /* background-color: #29539b; */
+            /* background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%); */
+            background-color: #537895;
+            background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+            /* background-color: #045de9; */
+            /* background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%); */
+            /* background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(0,52,89,1) 0%, rgba(0,168,232,1) 90% ); */
+            /* background-color: #0B0C10; */
+ 
+            /* background: linear-gradient(to right, #240b36, #c31432); */
+            /* background: #36D1DC;   */
+            /* background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);   */
+            /* background: linear-gradient(to right, #5B86E5, #36D1DC); */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* font-family: 'Roboto' , sans-serif; */
+            font-family: 'Poppins', sans-serif;
+
+            color: white;
+        }
+        textarea, input, button, select { font-family: inherit; font-size: inherit; }
+        .login{
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: fit-content;
+            height: fit-content;
+            margin-top: -70px;
+            margin-left: -130px;
+            background-color: #555555aa;
+            border-radius: 5px;
+
+        }
+        input{
+            /* padding-right: 70px; */
+            width: 254px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            
+            font-size: small;
+            padding-left: 8px;
+            background-color: #1F2833;  
+            color: white;
+        }
+        ::placeholder{
+            font-family: 'Poppins', sans-serif;
+        }
+        textarea{
+            font-family:"Times New Roman", Times, serif;
+            border-radius: 4px;
+            border: none;
+        }
+        .btn{
+            vertical-align: middle;
+            /* padding-left: 70px;
+            padding-right: 70px;
+            padding-top: 10px;
+            padding-bottom: 10px; */
+            width: 265px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            /* background-color: #66FCF1; */
+            background-color: #36D1FC;
+            /* background-image: linear-gradient(to right, #56CCF2 0%, #2F80ED 51%, #56CCF2 100%); */
+            /* background-image: linear-gradient(to right, #B2FEFA 0%, #0ED2F7 51%, #B2FEFA 100%); */
+            border: none;
+            box-shadow: rosybrown;
+            border-radius: 7px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            color: ivory;
+            font-weight: bold ;
+            font-size: medium;
+        }
+        .btn:hover {
+            background-position: right center; 
+        }
+        #logtxt{
+            /* text-align: center; */
+            color: white;
+            font-weight: bold;
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+        .header{
+            /* position:absolute; */
+            background-color: #FFFFFF;
+            color: black;
+            padding-left: 80px;
+            padding-top: 15px;
+            font-weight: bold;
+            font-size: 27px;
+            margin-right: -50px;
+            margin-top: -10px;
+            margin-left: -10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <span>Inviter</span>
+        </a>    
+    </div>
+    <div class="login">    
+        <form action="/users/login" method="GET">
+            <button  class="btn">login</button>
+        </form>
+        <form action="/users/signup" method="GET">
+            <button class="btn">Sign up</button>
+        </form>
+    </div>
+
+</body>
+</html>
