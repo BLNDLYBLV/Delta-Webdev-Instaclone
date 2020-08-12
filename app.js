@@ -209,17 +209,18 @@ io.on('connection',(socket)=>{
                 frompic=user.profpic;
             }
         });
-
-        var newnotif= new Notification({
-            id: Date.now(),
-            from: data.from,
-            to: data.to,
-            message: ' commented: '+data.message,
-            userpic: frompic,
-            pic: postimage,
-            sendto: '/p/'+data.postid
-        });
-        newnotif.save();
+        if(data.from!=data.to){
+            var newnotif= new Notification({
+                id: Date.now(),
+                from: data.from,
+                to: data.to,
+                message: ' commented: '+data.message,
+                userpic: frompic,
+                pic: postimage,
+                sendto: '/p/'+data.postid
+            });
+            newnotif.save();
+        }
         // console.log(newcomment);
     });
 

@@ -9,6 +9,14 @@
   <% }%> 
 <% return from }%>  
 
+<% function givepic(id){ %>
+  <% for( var x=0;x<names.length;x++){ %>
+  <%      if(names[x].id==id){ %>
+  <%          from=names[x].profpic;break; %>    
+  <%      } %>   
+  <% }%> 
+<% return from }%>
+
 <div class="container pt-5" style="overflow: hidden;" >
     <div class="row" style="margin-bottom: 10px;">    
         <div  class="col-4">
@@ -78,8 +86,12 @@
                 <img style=" width: 595px;height: 630px;" src="/uploads/<%= posts[i].image  %>" alt="">
                 <span style="display: inline-block;">
                   <div style=" margin-left: -5px;width: 421px; border-bottom: 1px solid rgba(0,0,0,0.1); position: absolute;top: 8px;padding: 10px;padding-bottom: 15px;">
-                    <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
-                    <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                    <form action="/profile/<%= user.id %>" style="display: inline-block;margin: 0;">
+                      <button style="border: none;background-color: white;padding: 0;">
+                        <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
+                        <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                      </button>
+                    </form>
                     <span onclick="postchangemodalon('<%= posts[i].id %>')" style="float: right;font-weight: 600;margin-top: 10px;margin-right: 15px;" class="far fa-ellipsis-h"></span>
                     <div id="postchangemodal<%= posts[i].id %>" class="postmodal">
                       <div style="width: 400px;height: 120px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
@@ -95,8 +107,12 @@
                   </div>
                   <div id="commentbox<%= posts[i].id %>" style="overflow: auto; border-bottom: 1px solid rgba(0,0,0,0.1); height: 380px;width: 421px; margin-left: -5px; position: absolute;top: 80px;padding: 10px;">
                     <div style="margin-bottom: 15px;">
-                      <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
-                      <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                      <form action="/profile/<%= user.id %>" style="display: inline-block;margin: 0;">
+                        <button style="border: none;background-color: white;padding: 0;">
+                          <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
+                          <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                        </button>
+                      </form>
                       <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= posts[i].caption %> </span>
                     </div>
                       <% maxcomm=0; %>
@@ -110,7 +126,11 @@
                             <%      } %>   
                             <% }%>  
                             <div style="margin-left: -5px; margin-bottom: 7px;">
-                              <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
+                              <form style="display: inline-block;" action="/profile/<%= comm.from %>">
+                                <button style="padding: 0;border: none;background-color: white;">
+                                  <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
+                                </button>
+                              </form>
                               <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
                             </div>
                               <% maxcomm++; %>
@@ -119,18 +139,43 @@
                   </div>
                   <div style="padding: 15px; position: relative;top: 245px; margin-left: -5px; border-bottom: 1px solid rgba(0,0,0,0.1);height: 115px;width: 420px;">
                     <div id="likeicon<%=posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="padding: 6px; font-size: 27px;" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart"></div>
-                    <div style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
-                    <div style="padding: 6px; font-size: 27px;" class="far fa-paper-plane"></div>
+                    <div onclick="icontoinput('<%= posts[i].id %>');" style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
+                    <form style="display: inline-block;" action="/chat">
+                      <button style="padding: 4px; font-size: 27px;border: none;background-color: white;" class="far fa-paper-plane"></button>
+                    </form>
                     <% if(posts[i].likesid.length==0){ %>
                       <div><%= posts[i].likesid.length %> likes</div>
                     <% }else{ %>
                       <div style="padding-left: 10px;">
-                        Liked by <%= givename(posts[i].likesid[0]) %> <span> <% if(posts[i].likesid.length==2){%><%=','+givename(posts[i].likesid[1])%><% } %> <% if(posts[i].likesid.length>2){%><%=' and '+(posts[i].likesid.length-1)+' others' %><% } %> </span>
+                        Liked by <%= givename(posts[i].likesid[0]) %> <span> <% if(posts[i].likesid.length==2){%><%=','+givename(posts[i].likesid[1])%><% } %> <% if(posts[i].likesid.length>2){%><%=' and '+(posts[i].likesid.length-1)%> <button onclick="likemodalon('<%= posts[i].id %>')" style="padding: 0%; border: none; background-color: white; font-weight: 600;">others</button> <% } %> </span>
                       </div>
                     <% } %> 
+                    <div id="likemodal<%= posts[i].id %>" class="likemodal">
+                      <div style=" background-color: white;width: 400px;height: 400px;position: fixed;top: 50%;left: 50%;margin-top: -210px;margin-left: -180px;border-radius: 20px;">
+                          <div style="border-bottom: 1px solid lightgray;">
+                              <div style="display: inline-block;margin-left: 30px;font-size: large; margin-top:20px ;padding-bottom: 15px;">Likes</div>
+                              <div style="float: right;margin-top: 20px;margin-right: 25px;" onclick="closebtn('<%= posts[i].id %>')" class="fa fa-times"></div>
+                          </div>    
+                          <div>
+                              <% for(var z=0;z<posts[i].likesid.length;z++){ %>
+                                  <form action="/profile/<%= posts[i].likesid[z] %>" method="GET">
+                                      <button style="border: none;background-color: white;">
+                                          <div style="padding: 10px ;margin-left: 10px;">
+                                              <img src="<%= givepic(posts[i].likesid[z]) %>" style="width: 45px;height: 45px;border-radius: 50%;" alt="">
+                                              <div style="display: inline-block; margin-left: 10px;position: relative;top: 2px;"><%= givename(posts[i].likesid[z]) %></div>
+                                          </div>
+                                      </button>   
+                                  </form>
+                              <% } %>
+                          </div>
+                      </div>
+                  </div>
                     <div style="position: relative;top: 42px;">
-                      <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= posts[i].id %>">
-                      <button onclick="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 7px;">Post</button>
+                      <form onsubmit="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>');return false">
+                        <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= posts[i].id %>">
+                        <input type="submit" value="" style="display: none;">
+                        <button onclick="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 7px;">Post</button>
+                      </form>  
                     </div> 
                   </div>
                 </span>
@@ -221,15 +266,27 @@
   var fileInput = document.getElementById('profpicchange');
   var form =document.getElementById('profpicform') ;
   var postidloc;
-  var closebtn;
+  
 
   // var handleFiles = () => {
   //   console.log("works");
   //   form.submit();
   // }
-
-
-
+  function icontoinput(postid){
+    var comminp=document.getElementById('feedcomminp'+postid);
+    comminp.focus();
+  }
+  function likemodalon(pstid){
+        postidloc=pstid;
+        var modal=document.getElementById('likemodal'+pstid);
+        modal.style.display='block';
+  }
+  
+  function closebtn(pstid){
+    postidloc=pstid;
+    var likemodal = document.getElementById('likemodal'+pstid);
+    likemodal.style.display='none';
+  }
 // fileInput.addEventListener("change", handleFiles);
 window.addEventListener('click',(e)=>{
   // console.log("goes inside");
@@ -248,7 +305,7 @@ window.addEventListener('click',(e)=>{
 
 function modalposton(postid) {
   var postmodal=document.getElementById('modalof'+postid);
-  closebtn=document.getElementById('modalclose'+postid);
+  var closebtn=document.getElementById('modalclose'+postid);
   closebtn.addEventListener('click',()=>{
     // console.log("listens");
     var postmodal=document.getElementById('modalof'+postidloc);

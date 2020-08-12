@@ -54,6 +54,7 @@ body{
     outline: none;
 }
 
+
 .profpic{
     width: 30px;
     height: 30px;
@@ -114,6 +115,9 @@ body{
     opacity: 1;
 }
 
+.profimg:hover{
+    cursor: pointer;
+}
 /* .profimg:hover .profheart{
     filter: brightness(100%);
     opacity: 1;
@@ -222,6 +226,9 @@ input:focus + .dropdown {
     display: block;
     border: 1px solid lightgrey;  
 
+}
+input:focus{
+    outline: none;
 }
 .navbarbtnact:focus + .activitydropdown {
     display: block;
