@@ -118,6 +118,9 @@ body{
 .profimg:hover{
     cursor: pointer;
 }
+.nooflikes:hover{
+    cursor: pointer;
+}
 /* .profimg:hover .profheart{
     filter: brightness(100%);
     opacity: 1;

@@ -58,7 +58,7 @@
         <form style="display: inline-block;margin-left: -3px;" action="/chat" method="GET">
             <button class="far fa-paper-plane" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
         </form>
-        <div onclick="likemodalon('<%=posts[i].id%>')" style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">
+        <div onclick="likemodalon('<%=posts[i].id%>')" class="nooflikes" style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">
             <strong id="likesnum<%= posts[i].id %>"><%= posts[i].likesid.length + " likes" %></strong>
         </div>
         <div id="likemodal<%= posts[i].id %>" class="likemodal">
