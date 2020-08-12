@@ -92,11 +92,16 @@
 </div>    
 </div>
 <% } %>
+<% if(posts[0]!=null){ %>  
 <div  style="margin-left: 700px;">
     <!-- s<div style="font-size: 150px;font-weight: 600;color: white;border: 3px solid black;border-radius: 50%; " class="far fa-circle"></div> -->
     <div style="margin-top: 50px;margin-bottom: 50px; font-size: larger;color: black;margin-left: -20px;">That's all for today</div>
-
 </div>
+<% }else{ %>
+    <div style="text-align: center;margin-top: 60px; font-weight: 600;">
+        You dont have any posts on your feed
+    </div>
+<% } %>
 <script src="/socket.js"></script>
 <script>
     var postid;
