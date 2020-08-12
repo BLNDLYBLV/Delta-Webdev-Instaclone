@@ -1,11 +1,19 @@
 <%- include('partials/header') %> 
 <% var i; %>
-<% var maxcomm,commflag=0,username; %>
+<% var maxcomm,commflag=0,username,userpic; %>
 
 <% function givename(id){ %>
     <% for( var x=0;x<names.length;x++){ %>
     <%      if(names[x].id==id){ %>
     <%          from=names[x].username;break; %>    
+    <%      } %>   
+    <% }%> 
+<% return from }%>
+
+<% function givepic(id){ %>
+    <% for( var x=0;x<names.length;x++){ %>
+    <%      if(names[x].id==id){ %>
+    <%          from=names[x].profpic;break; %>    
     <%      } %>   
     <% }%> 
 <% return from }%>
@@ -21,7 +29,7 @@
     <div class="post" >
         <form class="gotoprofbtn" action="/profile/<%= posts[i].ownerid %>" method="GET">
             <button class="gotoprofbtn">
-                <img id="postprofpic<%= posts[i].id %>" class="postprofpic" src="<%= posts[i].userpic %>" alt="">
+                <img id="postprofpic<%= posts[i].id %>" class="postprofpic" src="<%= givepic(posts[i].ownerid) %>" alt="">
             </button>    
         </form>
         <form style="position: relative;left: -10px;" class="gotoprofbtn" action="/profile/<%= posts[i].ownerid %>" method="GET">
@@ -53,8 +61,28 @@
         <form style="display: inline-block;margin-left: -3px;" action="/chat" method="GET">
             <button class="far fa-paper-plane" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
         </form>
-        <div style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">
+        <div onclick="likemodalon('<%=posts[i].id%>')" style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">
             <strong id="likesnum<%= posts[i].id %>"><%= posts[i].likesid.length + " likes" %></strong>
+        </div>
+        <div id="likemodal<%= posts[i].id %>" class="likemodal">
+            <div style=" background-color: white;width: 400px;height: 400px;position: fixed;top: 50%;left: 50%;margin-top: -210px;margin-left: -180px;border-radius: 20px;">
+                <div style="border-bottom: 1px solid lightgray;">
+                    <div style="display: inline-block;margin-left: 30px;font-size: large; margin-top:20px ;padding-bottom: 15px;">Likes</div>
+                    <div style="float: right;margin-top: 20px;margin-right: 25px;" onclick="closebtn()" class="fa fa-times"></div>
+                </div>    
+                <div>
+                    <% for(var z=0;z<posts[i].likesid.length;z++){ %>
+                        <form action="/profile/<%= posts[i].likesid[z] %>" method="GET">
+                            <button style="border: none;background-color: white;">
+                                <div style="padding: 10px ;margin-left: 10px;">
+                                    <img src="<%= givepic(posts[i].likesid[z]) %>" style="width: 45px;height: 45px;border-radius: 50%;" alt="">
+                                    <div style="display: inline-block; margin-left: 10px;position: relative;top: 2px;"><%= givename(posts[i].likesid[z]) %></div>
+                                </div>
+                            </button>   
+                        </form>
+                    <% } %>
+                </div>
+            </div>
         </div>
         <div style="padding-left: 8px;">
             <form style="display: inline-block;margin-left: -5px;" action="/profile/<%= posts[i].ownerid %>">
@@ -114,9 +142,16 @@
         var modal=document.getElementById('postmodal'+pstid);
         modal.style.display='block';
     }
+    function likemodalon(pstid){
+        postid=pstid;
+        var modal=document.getElementById('likemodal'+pstid);
+        modal.style.display='block';
+    }
     function closebtn(){
-        var modal=document.getElementById('postmodal'+postid);
-        modal.style.display='none';
+        var postmodal=document.getElementById('postmodal'+postid);
+        var likemodal=document.getElementById('likemodal'+postid);
+        postmodal.style.display='none';
+        likemodal.style.display='none';
     }
     window.addEventListener('click',(e)=>{
       if(e.target.id=='postmodal'+postid)
