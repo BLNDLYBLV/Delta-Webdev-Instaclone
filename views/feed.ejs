@@ -39,16 +39,13 @@
         </form>
         <div onclick="postmodalon('<%= posts[i].id %>')" style="float: right;margin-right: 15px;margin-top: 24px;font-weight: 501; font-size: 14px;" class="far fa-ellipsis-h "></div>
         <div id="postmodal<%= posts[i].id %>" class="postmodal">
-            <div style="width: 400px;height: 120px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+            <div style="width: 400px;height: 100px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
                 <div onclick="closebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
                 <hr style="margin-top: 35px;margin-bottom: 0px;">
                 <form action="/p/<%= posts[i].id %>">
                 <button style="border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Go to post</button>
                 </form>
                 <hr style="margin-top: 0px;margin-bottom: 0px;">
-                <form action="/p/<%= posts[i].id %>">
-                <button style="border: none;width: 390px;margin-left: 5px; background-color: white;text-align: center;margin-top: 7px;">Unfollow</button>
-                </form>
             </div>
         </div>
     </div>
