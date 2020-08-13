@@ -321,12 +321,16 @@ button:focus{
     /* float: right; */
     padding: 10px;
     margin: 10px;
+    /* padding-right: auto; */
     border: none;
     border-radius: 15px;
     background-color: rgba(0,0 ,0, 0.1);
     width: max-content;
     max-width: 350px;
     min-height: fit-content;
+}
+.mymsg,.omsg:hover{
+
 }
 #chatbox{
     overflow: scroll;    

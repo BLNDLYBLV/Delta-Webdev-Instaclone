@@ -83,7 +83,7 @@
             <div id="modalof<%= posts[i].id %>" class="postmodal" >
               <div id="modalclose<%= posts[i].id %>" style="color: #fff;font-size: xx-large; position: fixed; top:1.5% ;left: 96%;" class="fa fa-times"></div>
               <div style="position: fixed;left: 20%;top: 10%; width: 1015px;height: 630px;background-color: white;">
-                <img style=" width: 595px;height: 630px;" src="/uploads/<%= posts[i].image  %>" alt="">
+                <img style=" width: 595px;height: 630px;" ondblclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" src="/uploads/<%= posts[i].image  %>" alt="">
                 <span style="display: inline-block;">
                   <div style=" margin-left: -5px;width: 421px; border-bottom: 1px solid rgba(0,0,0,0.1); position: absolute;top: 8px;padding: 10px;padding-bottom: 15px;">
                     <form action="/profile/<%= user.id %>" style="display: inline-block;margin: 0;">
@@ -95,15 +95,31 @@
                     <span onclick="postchangemodalon('<%= posts[i].id %>')" style="float: right;font-weight: 600;margin-top: 10px;margin-right: 15px;" class="far fa-ellipsis-h"></span>
                     <div id="postchangemodal<%= posts[i].id %>" class="postmodal">
                       <div style="width: 400px;height: 120px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
-                          <div onclick="closebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
+                          <div onclick="closechangebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
                           <hr style="margin-top: 35px;margin-bottom: 0px;">
                           <form action="/p/<%= posts[i].id %>">
                           <button style="border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Go to post</button>
                           </form>
                           <hr style="margin-top: 0px;margin-bottom: 0px;">
-                          
+                          <form onsubmit="closechangebtn();deletemodalon();return false">
+                            <button style="color: rgb(200,30,100);font-weight: 600; border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Delete post</button>
+                          </form>
                       </div>
-                  </div>
+                    </div>
+                    <div id="postdeletemodal<%= posts[i].id %>" class="postmodal">
+                      <div style="width: 400px;height: 130px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                          <div style="float: left;margin-left: 165px;margin-top: 12px;">Delete post</div>
+                          <div onclick="closedeletebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
+                          <hr style="margin-top: 45px;margin-bottom: 0px;">
+                          <form action="/delete/<%= posts[i].id %>" method="POST">
+                          <button style="color: rgb(200,30,100);border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Yes</button>
+                          </form>
+                          <hr style="margin-top: 0px;margin-bottom: 0px;">
+                          <form onsubmit="closedeletemodal();return false">
+                            <button style="font-weight: 600; border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">No</button>
+                          </form>
+                      </div>
+                    </div>
                   </div>
                   <div id="commentbox<%= posts[i].id %>" style="overflow: auto; border-bottom: 1px solid rgba(0,0,0,0.1); height: 380px;width: 421px; margin-left: -5px; position: absolute;top: 80px;padding: 10px;">
                     <div style="margin-bottom: 15px;">
@@ -281,16 +297,27 @@
         var modal=document.getElementById('likemodal'+pstid);
         modal.style.display='block';
   }
-  
+  function deletemodalon(){
+        var modal=document.getElementById('postdeletemodal'+postidloc);
+        modal.style.display='block';
+  }
+  function closedeletemodal(){
+        var modal=document.getElementById('postdeletemodal'+postidloc);
+        modal.style.display='none';
+  }
   function closebtn(pstid){
     postidloc=pstid;
     var likemodal = document.getElementById('likemodal'+pstid);
     likemodal.style.display='none';
   }
+  function closechangebtn(){
+    var likemodal = document.getElementById('postchangemodal'+postidloc);
+    likemodal.style.display='none';
+  }
 // fileInput.addEventListener("change", handleFiles);
 window.addEventListener('click',(e)=>{
   // console.log("goes inside");
-  // console.log(e.target);
+  console.log(e.target);
   if(e.target.id=='modalof'+postidloc)
   {
     var postmodal=document.getElementById('modalof'+postidloc);
@@ -308,7 +335,7 @@ function modalposton(postid) {
   var closebtn=document.getElementById('modalclose'+postid);
   closebtn.addEventListener('click',()=>{
     // console.log("listens");
-    var postmodal=document.getElementById('modalof'+postidloc);
+    // var postmodal=document.getElementById('modalof'+postid);
     postmodal.style.display='none';
   });
   postidloc=postid;

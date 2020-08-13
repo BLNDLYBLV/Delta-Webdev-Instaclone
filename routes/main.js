@@ -342,8 +342,7 @@ app.post('/chat/:id',ensureAuthenticated,(req,res)=>{
         else{
             if(user==null || user==undefined || user==''){
                 msgerrchat="username not found";
-                res.redirect('/chat');
-                
+                res.redirect('/chat');   
             }
             else
             {
@@ -370,7 +369,40 @@ app.post('/chat/:id',ensureAuthenticated,(req,res)=>{
         }
     });
 });
-
+app.post('/delete/:postid',ensureAuthenticated,(req,res)=>{
+    var postid=req.params.postid;
+    Notification.find({sendto: '/p/'+postid},(err,notif)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            notif.forEach(doc=>{
+                doc.deleteOne();
+            });
+        }
+    });
+    Comment.find({postid:postid},(err,comms)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            comms.forEach(comm=>{
+                comm.deleteOne();
+            })
+        }
+    });
+    User.findOneAndUpdate({id:req.user.id},{$pull: {ownposts: postid}},{useFindAndModify:false},(err,user)=>{
+        if(err){
+            console.log(err);
+        }
+    });
+    Post.findOneAndDelete({id:postid},(err,post)=>{
+        if(err){
+            console.log(err);
+        }
+    });
+    res.redirect('/profile');
+});
 
 module.exports =app;
 
