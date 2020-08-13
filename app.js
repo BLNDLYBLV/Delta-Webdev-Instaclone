@@ -335,7 +335,7 @@ io.on('connection',(socket)=>{
                 }
                 else{
                     
-                    Notification.findOneAndDelete({message: ' liked your photo',pic: post.image },{useFindAndModify: false},(err,notif)=>{
+                    Notification.findOneAndDelete({from: data.userid , message: ' liked your photo',pic: post.image },{useFindAndModify: false},(err,notif)=>{
                         if(err){
                             console.log(err);
                         }
