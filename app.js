@@ -227,6 +227,7 @@ io.on('connection',(socket)=>{
     socket.on('newmsg',async (data)=>{
         console.log(data);
         var newmsg = new Message({
+            id: Date.now(),
             message: data.message,
             from: data.from,
             to: data.to,
@@ -346,6 +347,14 @@ io.on('connection',(socket)=>{
         
         io.to(socket.id).emit('likerepl',{likeflag:likeflag,postid:data.postid})
         likeflag=0;
+    });
+    socket.on('deletemsg',(data)=>{
+        console.log(data);
+        Message.findOneAndDelete({id:data.msgid},{useFindAndModify:false},(err,msg)=>{
+            if(err){
+                console.log(err);
+            }
+        });
     });
     socket.on('unfollow',(data)=>{
         // console.log('works')

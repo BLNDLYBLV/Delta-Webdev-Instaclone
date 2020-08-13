@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var MessageSchema = new mongoose.Schema({
+    id: String,
     room: String,
     time: String,
     message: String,

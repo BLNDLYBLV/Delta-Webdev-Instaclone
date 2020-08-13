@@ -14,6 +14,21 @@ var ouserid;
 
 var roomid;
 
+var currentmsgid;
+
+window.addEventListener('click',(e)=>{
+    // console.log(e.target.id);
+    if(e.target.id=='delmodal'){
+        closedelmodal();
+    }
+});
+
+function closedelmodal(){
+    var delmodl=document.getElementById('delmodal');
+    // console.log(delmodl);
+    delmodl.style.display='none';
+}
+
 var needprofpicc=document.getElementsByClassName('needprofpic');
 console.log(needprofpicc);
 
@@ -61,7 +76,7 @@ socket.on("replyfromdb",messages=>{
         {
             if(messages[i].from==userid)
             {
-                chatbox.innerHTML+="<div class='mymsg' >"+ messages[i].message +"</div>"
+                chatbox.innerHTML+="<div style='margin-bottom:-10px;'><div class='mymsg' style='display: inline-block' >"+ messages[i].message +"</div><button onClick='delchatmodalon("+messages[i].id +")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;'></button></div>";
             }
             else
             {
@@ -82,10 +97,21 @@ function chat(){
         }
         socket.emit('newmsg',message);
         sendinp.value='';
-        chatbox.innerHTML+="<div class='mymsg' >"+ message.message +"</div>";
+        chatbox.innerHTML+="<div class='mymsg'  >"+ message.message +"</div>";
     }
 }
 
+function delchatmodalon(id){
+    currentmsgid=id;
+    var delmodal=document.getElementById('delmodal');
+    delmodal.style.display='block';
+}
+
+function delmsg(){
+    console.log(currentmsgid);
+    socket.emit('deletemsg',{msgid: currentmsgid});
+    location.reload();
+}
 socket.on('newchat',data=>{
     chatbox.innerHTML+="<div class='omsg' >"+ data.message +"</div>"
 });

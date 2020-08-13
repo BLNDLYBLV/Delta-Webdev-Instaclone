@@ -329,8 +329,8 @@ button:focus{
     max-width: 350px;
     min-height: fit-content;
 }
-.mymsg,.omsg:hover{
-
+.del:hover{
+    color: black;
 }
 #chatbox{
     overflow: scroll;    

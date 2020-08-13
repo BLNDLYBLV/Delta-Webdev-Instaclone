@@ -8,7 +8,7 @@
         <div class="col-4">
             <div style="padding: 15px; border: 1px solid rgba(0,0,0,0.08); ">
                 <span style="position:relative; left: 43%;"><strong>Direct</strong></span>
-                <button type="button"  data-toggle="modal" data-target="#exampleModalCenter" style="border:none ;background-color: white; padding-top: 5px;padding-bottom: 5px; position:relative; left: 75%; font-size: medium;" class="fa fa-pen"></button> 
+                <button type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="fa fa-pen del" style="border:none ;background-color: white; padding-top: 5px;padding-bottom: 5px; position:relative; left: 75%; font-size: medium;" ></button> 
             </div>
             <div data-simplebar style="height: 600px; position: relative; top: -1px; border: 1px solid rgba(0,0,0,0.08);">
                 
@@ -63,6 +63,15 @@
             <div class="mymsg" > Hi there</div>
             <div class="mymsg" > Hi there</div>
             <div class="mymsg" > Hi there</div> -->
+          </div>
+          <div id="delmodal" class="postmodal">
+            <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete message?</div>
+                <hr style="margin-top: 35px;margin-bottom: 0px;">
+                <button onclick="delmsg();" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                <hr style="margin-top: 0px;margin-bottom: 0px;">
+                <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+            </div>
           </div>
           <div style="border-top: 1px solid rgba(0,0,0,0.08); height: 49px;background-color: rgba(0,0,0,0.01);">
             <form style="display: inline-block;" onsubmit="chat();return false;">
