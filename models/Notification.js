@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var NotificationSchema = new mongoose.Schema({
     id: String,
+    relatedid: String,
     from: String,
     to: String,
     message: String,
