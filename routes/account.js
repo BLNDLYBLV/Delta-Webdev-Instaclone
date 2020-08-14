@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+var bcrypt =require('bcrypt');
 var {ensureAuthenticated}=require('../config/auth');
 
 
@@ -17,6 +18,10 @@ const { forEach } = require('async');
 var editmsg='';
 var name=[];
 var notifs=[];
+
+function hasWhiteSpace(s) {
+    return s.indexOf(' ') >= 0;
+}
 
 app.get('/edit',async (req,res)=>{
     notifs=[];
@@ -88,6 +93,41 @@ app.post('/edit',(req,res)=>{
             }
         });
     }
+});
+
+app.post('/changepass',(req,res)=>{
+    var oldpass=req.body.oldpass;
+    var newpass=req.body.newpass;
+    var newpassagain=req.body.confirmnewpass;
+
+    bcrypt.compare(oldpass,req.user.password,(err,ismatch)=>{
+        if(newpass==newpassagain && !(hasWhiteSpace(newpass)))
+        {
+            bcrypt.genSalt(10, (err, salt)=> {
+                bcrypt.hash(newpass, salt, (err, hash)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    User.findOne({id:req.user.id},(err,user)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            user.password=hash;
+                            user.save();
+                            res.redirect('/profile');
+                        }
+                    });
+
+                    // newUser.password=hash;
+                    // newUser.save()
+                    //     .then( user =>{
+                    //         res.redirect('/users/login');
+                    //     })
+                });
+            });
+        }
+    });
 });
 
 module.exports =app;
