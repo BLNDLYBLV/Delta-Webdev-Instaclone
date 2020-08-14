@@ -29,8 +29,9 @@
                         </li>  
                         <li class="nav-item">
                             <a href="/notification" data-toggle="tooltip" data-placement="bottom"  title="notification" class="fa fa-heart navbarbtn" ></a>
+                            <% if(user.newnotifs!=0){ %><div style="display: inline-block; border: none; width: 5px;height: 5px; border-radius: 50%;background-color: red;color: white;font-size: 3px ;position: relative;left: -32px;top: 10px;" ></div> <% } %>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" <% if(user.newnotifs!=0){ %>style="margin-left: -13px ;" <% } %>>
                             <a href="/create" data-toggle="tooltip" data-placement="bottom"  title="create" class="fa fa-plus-circle navbarbtn" ></a>
                         </li>
                         <li class="nav-item">

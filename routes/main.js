@@ -161,6 +161,11 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
 });
 
 app.get('/notification',(req,res)=>{
+    User.findOneAndUpdate({id:req.user.id},{newnotifs: 0},{useFindAndModify:false},(err,user)=>{
+        if(err){
+            console.log(err);
+        }
+    });
     res.render('notifications.ejs',{user: req.user,names: name,notifs:notifs});
 })
 

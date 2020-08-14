@@ -60,6 +60,7 @@ app.post('/signup', (req,res) =>{
                 {
                     var newUser = new User({
                         id: Date.now(),
+                        newnotifs:0,
                         username: username,
                         password: password, 
                         email: emailid,

@@ -221,6 +221,15 @@ io.on('connection',(socket)=>{
                 sendto: '/p/'+data.postid
             });
             newnotif.save();
+            User.findOne({id:data.to},(err,user)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    user.newnotifs=user.newnotifs+1;
+                    user.save();
+                }
+            });
         }
         // console.log(newcomment);
     });
@@ -248,7 +257,19 @@ io.on('connection',(socket)=>{
             if(err){
                 console.log(err);
             }
+            else{
+                User.findOne({id:notif.to},(err,user)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        user.newnotifs=user.newnotifs-1;
+                        user.save();
+                    }
+                });
+            }
         });
+        
     });
     socket.on('like',async(data)=>{
         var likeflag=0;
@@ -339,6 +360,15 @@ io.on('connection',(socket)=>{
                 });
                 console.log(newnotif);
                 newnotif.save();
+                User.findOne({id:ownerid},(err,user)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        user.newnotifs=user.newnotifs+1;
+                        user.save();
+                    }
+                });
             }
         }
         else{
@@ -353,6 +383,15 @@ io.on('connection',(socket)=>{
                         if(err){
                             console.log(err);
                         }
+                        User.findOne({id:notif.to},(err,user)=>{
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                user.newnotifs=user.newnotifs+1;
+                                user.save();
+                            }
+                        });
                     });
                 }
             });
@@ -377,9 +416,20 @@ io.on('connection',(socket)=>{
                 console.log(err);
             }
             else{
-                Notification.findOneAndDelete({message: ' started following you',to:data.ouserid},(err,user)=>{
+                Notification.findOneAndDelete({message: ' started following you',to:data.ouserid},(err,notif)=>{
                     if(err){
                         console.log(err);
+                    }
+                    else{
+                        User.findOne({id:notif.to},(err,user)=>{
+                            if(err){
+                                console.log(err);
+                            }
+                            else{
+                                user.newnotifs=user.newnotifs+1;
+                                user.save();
+                            }
+                        });
                     }
                 });
             }
@@ -410,6 +460,15 @@ io.on('connection',(socket)=>{
                 });
 
                 newnotif.save();
+                User.findOne({id:data.ouserid},(err,user)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        user.newnotifs=user.newnotifs+1;
+                        user.save();
+                    }
+                });
             }
         });
         User.findOneAndUpdate({id: data.ouserid},{$push:{followerid: data.userid}},{useFindAndModify: false},(err,user)=>{
