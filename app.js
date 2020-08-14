@@ -212,6 +212,7 @@ io.on('connection',(socket)=>{
         if(data.from!=data.to){
             var newnotif= new Notification({
                 id: Date.now(),
+                relatedid:newcomment.id,
                 from: data.from,
                 to: data.to,
                 message: ' commented: '+data.message,
@@ -236,6 +237,18 @@ io.on('connection',(socket)=>{
         });
         newmsg.save();
         socket.broadcast.to(data.room).emit('newchat',data);
+    });
+    socket.on('delcomment',(data)=>{
+        Comment.findOneAndDelete({id:data.commid},{useFindAndModify:false},(err,comm)=>{
+            if(err){
+                console.log(err);
+            }
+        });
+        Notification.findOneAndDelete({relatedid:data.commid},{useFindAndModify:false},(err,notif)=>{
+            if(err){
+                console.log(err);
+            }
+        });
     });
     socket.on('like',async(data)=>{
         var likeflag=0;

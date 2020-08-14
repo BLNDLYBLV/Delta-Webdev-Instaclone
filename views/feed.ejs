@@ -98,7 +98,16 @@
                 <%comments.forEach(comm=>{ %>    
                 <% if(comm.postid==posts[i].id ){ %>
                     <% if(maxcomm<2){ %>
-                    <div style="margin-left: 8px; font-size: 15px;"><form style="display: inline-block;margin-left: -5px;" action="/profile/<%= comm.from %>"><button style="border: none;background-color:white ;"><strong><%= givename(comm.from)+'  ' %></strong></button></form><span style="font-size: 14;font-weight: 350;" ><%= comm.comment %></span></div>
+                    <div id="comm<%= comm.id %>" style="margin-left: 8px; font-size: 15px;"><form style="display: inline-block;margin-left: -5px;" action="/profile/<%= comm.from %>"><button style="border: none;background-color:white ;"><strong><%= givename(comm.from)+'  ' %></strong></button></form><span style="font-size: 14;font-weight: 350;" ><%= comm.comment %></span><% if(comm.from==user.id){ %><button onClick='delchatmodalon("<%= comm.id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button><% } %></div>
+                    <div id="delmodal<%= comm.id %>" class="postmodal">
+                        <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                            <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                            <hr style="margin-top: 35px;margin-bottom: 0px;">
+                            <button onclick="delcomm('<%= comm.id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                            <hr style="margin-top: 0px;margin-bottom: 0px;">
+                            <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                        </div>
+                    </div>
                     <% maxcomm++; %>
                 <% }else if(commflag==0){ %>
                     <a style="margin-left: 7px; text-decoration: underline;" href="/p/<%= posts[i].id %>">View all comments</a>
@@ -106,6 +115,7 @@
                 <% }} %>        
             <% })} %>    
         </div>
+        
     </div>
     <div class="likebar"  style="padding:10px;" >
     <form onsubmit="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>');return false;">
@@ -130,9 +140,19 @@
 <script src="/socket.js"></script>
 <script>
     var postid;
+    var presentcommid;
     function icontoinput(postid){
         var comminp=document.getElementById('feedcomminp'+postid);
         comminp.focus();
+    }
+    function delchatmodalon(commid){
+        presentcommid=commid;
+        var delcommmodal=document.getElementById('delmodal'+commid);
+        delcommmodal.style.display='block';
+    }
+    function closedelmodal(){
+        var delcommmodal=document.getElementById('delmodal'+presentcommid);
+        delcommmodal.style.display='none';        
     }
     function postmodalon(pstid){
         postid=pstid;
@@ -150,10 +170,21 @@
         postmodal.style.display='none';
         likemodal.style.display='none';
     }
+    function delcomm(commid){
+        socket.emit('delcomment',{commid:commid});
+        var comment=document.getElementById('comm'+commid);
+        comment.remove();
+        closedelmodal();
+    }
     window.addEventListener('click',(e)=>{
       if(e.target.id=='postmodal'+postid)
       {
         var postmodal=document.getElementById('postmodal'+postid);
+        postmodal.style.display='none';
+      }
+      if(e.target.id=='delmodal'+presentcommid)
+      {
+        var postmodal=document.getElementById('delmodal'+presentcommid);
         postmodal.style.display='none';
       }
     });
