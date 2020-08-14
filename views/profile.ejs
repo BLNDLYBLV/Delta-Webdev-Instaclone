@@ -141,13 +141,23 @@
                             <%          from=names[x].username;break; %>    
                             <%      } %>   
                             <% }%>  
-                            <div style="margin-left: -5px; margin-bottom: 7px;">
+                            <div id="comm<%= comm.id %>" style="margin-left: -5px; margin-bottom: 7px;">
                               <form style="display: inline-block;" action="/profile/<%= comm.from %>">
                                 <button style="padding: 0;border: none;background-color: white;">
                                   <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
                                 </button>
                               </form>
                               <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
+                              <button onclick='delchatmodalon("<%= comm.id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button>
+                              <div id="delmodal<%= comm.id %>" class="postmodal">
+                                <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                                    <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                                    <hr style="margin-top: 35px;margin-bottom: 0px;">
+                                    <button onclick="delcomm('<%= comm.id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                                    <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                    <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                                </div>
+                            </div>
                             </div>
                               <% maxcomm++; %>
                           <% } %>        
@@ -282,12 +292,22 @@
   var fileInput = document.getElementById('profpicchange');
   var form =document.getElementById('profpicform') ;
   var postidloc;
+  var presentcommid;
   
 
   // var handleFiles = () => {
   //   console.log("works");
   //   form.submit();
   // }
+  function delchatmodalon(commid){
+        presentcommid=commid;
+        var delcommmodal=document.getElementById('delmodal'+commid);
+        delcommmodal.style.display='block';
+    }
+    function closedelmodal(){
+        var delcommmodal=document.getElementById('delmodal'+presentcommid);
+        delcommmodal.style.display='none';        
+    }
   function icontoinput(postid){
     var comminp=document.getElementById('feedcomminp'+postid);
     comminp.focus();
@@ -304,6 +324,12 @@
   function closedeletemodal(){
         var modal=document.getElementById('postdeletemodal'+postidloc);
         modal.style.display='none';
+  }
+  function delcomm(commid){
+        socket.emit('delcomment',{commid:commid});
+        var comment=document.getElementById('comm'+commid);
+        comment.remove();
+        closedelmodal();
   }
   function closebtn(pstid){
     postidloc=pstid;
@@ -328,6 +354,11 @@ window.addEventListener('click',(e)=>{
     var postmodal=document.getElementById('postchangemodal'+postidloc);
     postmodal.style.display='none';
   }
+  if(e.target.id=='delmodal'+presentcommid)
+      {
+        var postmodal=document.getElementById('delmodal'+presentcommid);
+        postmodal.style.display='none';
+      }
 });
 
 function modalposton(postid) {
