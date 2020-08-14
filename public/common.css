@@ -357,12 +357,23 @@ button:focus{
 }
 .postmodal{
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     left: 0;
     top: 0;
     height: 100%;
     width: 100%;
     background-color: rgba(0,0 ,0, 0.5) ;
+    display: none;
+    /* filter: brightness(50%); */
+}
+.delmodal{
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /* background-color: rgba(0,0 ,0, 0.5) ; */
     display: none;
     /* filter: brightness(50%); */
 }

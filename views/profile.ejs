@@ -157,7 +157,7 @@
                                     <hr style="margin-top: 0px;margin-bottom: 0px;">
                                     <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
                                 </div>
-                            </div>
+                              </div>
                             </div>
                               <% maxcomm++; %>
                           <% } %>        
@@ -300,14 +300,14 @@
   //   form.submit();
   // }
   function delchatmodalon(commid){
-        presentcommid=commid;
-        var delcommmodal=document.getElementById('delmodal'+commid);
-        delcommmodal.style.display='block';
-    }
-    function closedelmodal(){
-        var delcommmodal=document.getElementById('delmodal'+presentcommid);
-        delcommmodal.style.display='none';        
-    }
+      presentcommid=commid;
+      var delcommmodal=document.getElementById('delmodal'+commid);
+      delcommmodal.style.display='block';
+  }
+  function closedelmodal(){
+      var delcommmodal=document.getElementById('delmodal'+presentcommid);
+      delcommmodal.style.display='none';        
+  }
   function icontoinput(postid){
     var comminp=document.getElementById('feedcomminp'+postid);
     comminp.focus();
@@ -355,10 +355,10 @@ window.addEventListener('click',(e)=>{
     postmodal.style.display='none';
   }
   if(e.target.id=='delmodal'+presentcommid)
-      {
-        var postmodal=document.getElementById('delmodal'+presentcommid);
-        postmodal.style.display='none';
-      }
+  {
+    var postmodal=document.getElementById('delmodal'+presentcommid);
+    postmodal.style.display='none';
+  }
 });
 
 function modalposton(postid) {

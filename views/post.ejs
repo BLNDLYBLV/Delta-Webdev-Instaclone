@@ -35,9 +35,19 @@
                 <%          from=names[x].username;break; %>    
                 <%      } %>   
                 <% }%>  
-                <div style="margin-left: -5px; margin-bottom: 7px;">
+                <div id="comm<%= comm.id %>" style="margin-left: -5px; margin-bottom: 7px;">
                   <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
                   <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
+                  <% if(comm.from==user.id){ %><button onclick='delchatmodalon("<%= comm.id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button> <% } %>
+                  <div id="delmodal<%= comm.id %>"  class="postmodal">
+                    <div style="border: 1px solid lightgray; width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                        <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                        <hr style="margin-top: 35px;margin-bottom: 0px;">
+                        <button onclick="delcomm('<%= comm.id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                        <hr style="margin-top: 0px;margin-bottom: 0px;">
+                        <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                    </div>
+                  </div>
                 </div>
                   <% maxcomm++; %>
               <% } %>        
@@ -45,8 +55,10 @@
       </div>
       <div style="padding: 15px; position: relative;top: 245px; margin-left: -5px; border-bottom: 1px solid rgba(0,0,0,0.1);height: 115px;width: 420px;">
         <div id="likeicon<%=post.id %>" onclick="like('<%= post.id %>','<%= user.id %>','<%= post.likesid %>')" style="padding: 6px; font-size: 27px;" class="<%= post.likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart"></div>
-        <div style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
-        <div style="padding: 6px; font-size: 27px;" class="far fa-paper-plane"></div>
+        <div onclick="icontoinput('<%= post.id %>')" style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
+        <form action="/chat" style="display: inline-block;">
+        <button style="border: none;background-color: white;margin-left: -4px;  padding: 6px; font-size: 27px;" class="far fa-paper-plane"></button>
+        </form> 
         <% if(post.likesid.length==0){ %>
           <div><%= post.likesid.length %> likes</div>
         <% }else{ %>
@@ -55,7 +67,10 @@
           </div>
         <% } %> 
         <div style="position: relative;top: 42px;">
-          <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= post.id %>">
+          <form style="display: inline-block;" onsubmit="comment('<%= post.id %>','<%= user.id %>','<%= user.username %>','<%= post.ownerid %>');return false;">
+            <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= post.id %>">
+            <input type="submit" value="" style="display: none;">
+          </form> 
           <button onclick="comment('<%= post.id %>','<%= user.id %>','<%= user.username %>','<%= post.ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 7px;">Post</button>
         </div> 
       </div>
@@ -69,36 +84,62 @@
     // var form =document.getElementById('profpicform') ;
     var postidloc;
     var closebtn;
-  
+    var presentcommid;
     // var handleFiles = () => {
     //   console.log("works");
     //   form.submit();
     // }
-  
-  
-  
-  // fileInput.addEventListener("change", handleFiles);
-  window.addEventListener('click',(e)=>{
-    // console.log("goes inside");
-    // console.log(e.target);
-    if(e.target.id=='modalof'+postidloc)
-    {
-      var postmodal=document.getElementById('modalof'+postidloc);
-      postmodal.style.display='none';
+    
+    var nav=document.getElementsByClassName('fix-top')[0];
+    nav.style.zIndex='0';
+    
+    function icontoinput(postid){
+        var comminp=document.getElementById('feedcomminp'+postid);
+        comminp.focus();
     }
-  });
+
+    function delchatmodalon(commid){
+        presentcommid=commid;
+        var delcommmodal=document.getElementById('delmodal'+commid);
+        delcommmodal.style.display='block';
+    }
+    function closedelmodal(){
+        var delcommmodal=document.getElementById('delmodal'+presentcommid);
+        delcommmodal.style.display='none';        
+    }
+    function delcomm(commid){
+        socket.emit('delcomment',{commid:commid});
+        var comment=document.getElementById('comm'+commid);
+        comment.remove();
+        closedelmodal();
+    }
   
-  function modalposton(postid) {
-    var postmodal=document.getElementById('modalof'+postid);
-    closebtn=document.getElementById('modalclose'+postid);
-    closebtn.addEventListener('click',()=>{
-      // console.log("listens");
-      var postmodal=document.getElementById('modalof'+postidloc);
-      postmodal.style.display='none';
+    // fileInput.addEventListener("change", handleFiles);
+    window.addEventListener('click',(e)=>{
+      // console.log("goes inside");
+      // console.log(e.target);
+      if(e.target.id=='modalof'+postidloc)
+      {
+        var postmodal=document.getElementById('modalof'+postidloc);
+        postmodal.style.display='none';
+      }
+      if(e.target.id=='delmodal'+presentcommid)
+      {
+        var postmodal=document.getElementById('delmodal'+presentcommid);
+        postmodal.style.display='none';
+      }
     });
-    postidloc=postid;
-    postmodal.style.display='block';
-  }
+    function modalposton(postid) {
+      var postmodal=document.getElementById('modalof'+postid);
+      closebtn=document.getElementById('modalclose'+postid);
+      closebtn.addEventListener('click',()=>{
+        // console.log("listens");
+        var postmodal=document.getElementById('modalof'+postidloc);
+        postmodal.style.display='none';
+      });
+      postidloc=postid;
+      postmodal.style.display='block';
+    }
   
   </script>
 <%- include('partials/footer') %> 
