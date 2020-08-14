@@ -58,7 +58,7 @@ app.get('/feed',ensureAuthenticated,async(req,res)=>{
             notifs=notifications;
         }
     });
-    console.log(notifs);
+    // console.log(notifs);
     var feedposts=[];
     req.user.followingid.forEach(async(id)=>{
         await Post.find({ownerid: id},(err,posts)=>{
@@ -71,10 +71,10 @@ app.get('/feed',ensureAuthenticated,async(req,res)=>{
                 posts.forEach(async (post)=>{
                     feedposts.push(post);
                 });
+                feedposts.sort((a,b)=> a.id-b.id );
             }
         });
     });
-    console.log(feedposts);
     
     // console.log(postcomms);
 
@@ -104,7 +104,7 @@ app.get('/feed',ensureAuthenticated,async(req,res)=>{
             else{
                 res.render('feed.ejs',{user: req.user,posts:feedposts,comments: postcomms,names:name,notifs:notifs});
             }
-            console.log(postcomms);
+            // console.log(postcomms);
         }
     })
 });
