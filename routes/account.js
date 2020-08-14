@@ -58,28 +58,36 @@ app.post('/edit',(req,res)=>{
     var username=req.body.username;
     var bio=req.body.bio;
     var email=req.body.email;
-
-    User.findOne({username: username},(err,user)=>{
-        if(err){
-            console.log(err);            
-        }
-        else{
-            if(user && username!=req.user.username){
-                editmsg='Username already exists loser!';
-                res.redirect('/account/edit');
-                console.log(editmsg);    
-
+    function hasWhiteSpace(s) {
+        return s.indexOf(' ') >= 0;
+    }
+    if(hasWhiteSpace(username)){
+        editmsg='Username contains spaces!';
+        res.redirect('/account/edit');
+    }
+    else
+    {
+        User.findOne({username: username},(err,user)=>{
+            if(err){
+                console.log(err);            
             }
             else{
-                User.findOneAndUpdate({username: req.user.username},{username: username,bio: bio,email: email},{useFindAndModify: false},(err,user)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                });
-                res.redirect('/profile');
+                if(user && username!=req.user.username){
+                    editmsg='Username already exists loser!';
+                    res.redirect('/account/edit');
+                    console.log(editmsg);            
+                }
+                else{
+                    User.findOneAndUpdate({username: req.user.username},{username: username,bio: bio,email: email},{useFindAndModify: false},(err,user)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                    res.redirect('/profile');
+                }
             }
-        }
-    });
+        });
+    }
 });
 
 module.exports =app;

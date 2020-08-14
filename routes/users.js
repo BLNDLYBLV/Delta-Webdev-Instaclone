@@ -26,7 +26,7 @@ app.post('/signup', (req,res) =>{
     var redir=0;
     function hasWhiteSpace(s) {
         return s.indexOf(' ') >= 0;
-      }
+    }
     if(!username || !password || !repassword || !emailid)
     {
         signerrors.push('Please enter every credentials');
