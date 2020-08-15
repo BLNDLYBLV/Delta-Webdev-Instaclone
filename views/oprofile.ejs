@@ -97,7 +97,7 @@
             <div id="modalof<%= posts[i].id %>" class="postmodal" >
               <div id="modalclose<%= posts[i].id %>" style="color: #fff;font-size: xx-large; position: fixed; top:1.5% ;left: 96%;" class="fa fa-times"></div>
               <div style="position: fixed;left: 20%;top: 10%; width: 1015px;height: 630px;background-color: white;">
-                <img style=" width: 595px;height: 630px;" src="/uploads/<%= posts[i].image  %>" alt="">
+                <img style=" width: 595px;height: 630px;" ondblclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>');" src="/uploads/<%= posts[i].image  %>" alt="">
                 <span style="display: inline-block;">
                   <div style=" margin-left: -5px;width: 421px; border-bottom: 1px solid rgba(0,0,0,0.1); position: absolute;top: 8px;padding: 10px;padding-bottom: 15px;">
                     <form style="display: inline-block;" action="/profile/<%= ouser.id %>">
