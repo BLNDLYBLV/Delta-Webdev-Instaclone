@@ -1,15 +1,22 @@
 <%- include('partials/header') %> 
-<div ondrop="dropping(event)" id="dropzone" class="container my-4 content"> 
-    <div  class="dropzone" style="display: <%= typeof flag != 'undefined' ?  'none' : 'block' %> ;">
+<div ondrop="dropping(event)"  class="container my-4 content"> 
+    <div  class="dropzone" id="dropzone" style="display: <%= typeof flag != 'undefined' ?  'none' : 'block' %> ;">
         <div>
-            <img style="width: 50px;height: 50px;margin-top: 30%;" src="https://icon-library.com/images/icon-drag/icon-drag-1.jpg" alt="draganddrop">
+            <img style="width: 50px;height: 50px;margin-top: 22%;" src="https://icon-library.com/images/icon-drag/icon-drag-1.jpg" alt="draganddrop">
         </div>
         <div class="dropzonetxt">
             Drag and drop the file here
         </div>
-        <form action="/create" method="POST" enctype="multipart/form-data">
-            <input type="file" id="inputimage" name="inputimage"  class="imageinp"/>
-            <button class="btn-success">Submit</button>
+        <div>
+            <div>Or</div>
+            <div style="font-size: large;">
+                Click any where inside the box
+            </div>
+            <div style="font-size: large;">to add a file</div>
+        </div>
+        <form action="/create" method="POST" id="inpform" enctype="multipart/form-data">
+            <input onchange="this.form.submit()"; type="file" id="inputimage" name="inputimage" style="display: none;"  class="imageinp"/>
+            <!-- <button class="btn-success">Submit</button> -->
         </form>
     </div>
     <div>
@@ -28,6 +35,24 @@
         </form>
     </div>
 </div>
-
+<script>
+    var fileinput=document.getElementById('inputimage');
+    var inpform=document.getElementById('inpform');
+    var dropzone=document.getElementById('dropzone');
+    dropzone.addEventListener('click',(e)=>{
+        fileinput.click();
+    });
+    dropzone.addEventListener('dragover',(e)=>{
+        e.preventDefault();
+    });
+    
+    dropzone.addEventListener('drop',(e)=>{
+        e.preventDefault();
+        if(e.dataTransfer.files.length){
+            fileinput.files=e.dataTransfer.files;
+            inpform.submit();
+        }
+    });
+</script>
 <%- include('partials/footer') %>
          
