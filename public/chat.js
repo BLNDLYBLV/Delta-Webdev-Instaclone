@@ -120,7 +120,7 @@ function delchatmodalon(id){
 }
 
 function delmsg(){
-    // console.log(currentmsgid);
+    // console.log(currentmsgid);   
     socket.emit('deletemsg',{msgid: currentmsgid});
     location.reload();
 }
