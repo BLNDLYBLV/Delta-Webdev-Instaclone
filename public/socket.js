@@ -15,12 +15,12 @@ for(var i=0;i<needprofpicc.length;i++)
     profpicaddition(gettingusername);
 }
 
-console.log(needcommprofpicc);
+// console.log(needcommprofpicc);
 for(var i=0;i<needcommprofpicc.length;i++)
 {
     var gettingusername = needcommprofpicc[i].id.substr(11,150);
     // console.log(i);
-    console.log(gettingusername);
+    // console.log(gettingusername);
     socket.emit('needuserpiccomm',({
         commid: gettingusername
     }))
@@ -101,7 +101,7 @@ socket.on('likerepl',(data)=>{
     var likenum=document.getElementById('likesnum'+data.postid);
     var likeicon=document.getElementById('likeicon'+data.postid);
 
-    console.log(data.likeflag);
+    // console.log(data.likeflag);
     if(data.likeflag==0)
     {
         likeicon.classList.remove="far";
@@ -128,7 +128,7 @@ socket.on('feeduserpicreply',data=>{
 
 socket.on('commuserpicreply',data=>{
     // console.log(data);
-    console.log('commuserpic'+data.commid);
+    // console.log('commuserpic'+data.commid);
     var commpic= document.getElementById('commuserpic'+data.commid);
     commpic.forEach(commimg => {
         commimg.src=data.userpic;

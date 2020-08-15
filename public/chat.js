@@ -37,11 +37,11 @@ function closedelmodal(){
 }
 
 var needprofpicc=document.getElementsByClassName('needprofpic');
-console.log(needprofpicc);
+// console.log(needprofpicc);
 
 needprofpicc.forEach(eachchat => {
     var gettingusername = eachchat.id.substr(4,150);
-    console.log(gettingusername);
+    // console.log(gettingusername);
     profpicaddition(gettingusername);
 });
 
@@ -65,7 +65,7 @@ function newchat(usrid,ousrid,ousernam,ouserpic,usernam,romid){
 }
 
 function profpicaddition(id){
-    console.log('onloadworks');
+    // console.log('onloadworks');
     socket.emit('needuserpic',{userid: id});
 }
 
@@ -81,7 +81,7 @@ socket.on('lastmsg',(data)=>{
 });
 
 socket.on("replyfromdb",messages=>{
-    console.log("works!");
+    // console.log("works!");
     if(messages!=null)
     {
         for(var i=0;i<messages.length;i++)
@@ -120,7 +120,7 @@ function delchatmodalon(id){
 }
 
 function delmsg(){
-    console.log(currentmsgid);
+    // console.log(currentmsgid);
     socket.emit('deletemsg',{msgid: currentmsgid});
     location.reload();
 }

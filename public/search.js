@@ -3,7 +3,7 @@
 var names=[];
 names = JSON.parse(document.getElementById('variableJSON').innerHTML);
 document.getElementById('variableJSON').innerHTML='';
-console.log(names);
+// console.log(names);
 var match;
 var i;
 var search=document.getElementById('search');
@@ -26,7 +26,7 @@ var dropdown=document.getElementsByClassName('dropdown');
 
 function httpGet(theUrl)
 {
-    console.log("works!");
+    // console.log("works!");
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
     xmlHttp.send( null );
@@ -35,16 +35,16 @@ function httpGet(theUrl)
 search.addEventListener('input',async ()=>
 {
     
-    console.log(prevelem);
+    // console.log(prevelem);
     // for(i=0;i<prevelem.length;i++) 
     // {
     //     prevelem[i].remove();
     // }
     document.querySelectorAll('.ddelement').forEach(e => e.remove());
-    console.log(search.value);
+    // console.log(search.value);
     if(search.value=='')
     {
-        console.log("empty");
+        // console.log("empty");
     }
     else
     {
@@ -53,7 +53,7 @@ search.addEventListener('input',async ()=>
             return id.username.match(regex);
         });
         // console.log(names);
-        console.log(matches);
+        // console.log(matches);
         matches.forEach(match=>{
             var newform=document.createElement('form');
             var newdiv=document.createElement("button");

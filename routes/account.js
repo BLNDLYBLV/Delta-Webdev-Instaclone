@@ -49,10 +49,10 @@ app.get('/edit',async (req,res)=>{
             notifs=notifications;
         }
     });
-    console.log(editmsg);
+    // console.log(editmsg);
     res.render('edit.ejs',{user:req.user,msg:editmsg,names:name,notifs:notifs});
     editmsg='';
-    console.log(editmsg);    
+    // console.log(editmsg);    
 });
 
 app.get('/password',(req,res)=>{
@@ -80,7 +80,7 @@ app.post('/edit',(req,res)=>{
                 if(user && username!=req.user.username){
                     editmsg='Username already exists loser!';
                     res.redirect('/account/edit');
-                    console.log(editmsg);            
+                    // console.log(editmsg);            
                 }
                 else{
                     User.findOneAndUpdate({username: req.user.username},{username: username,bio: bio,email: email},{useFindAndModify: false},(err,user)=>{

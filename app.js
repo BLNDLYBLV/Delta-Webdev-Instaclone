@@ -14,11 +14,11 @@ var moment       = require('moment');
 var server       = http.createServer(app);
 var io           = socket(server);   
 
-var Post=require('./models/Post');
-var User= require('./models/User');
-var Message= require('./models/Message');
-var Comment = require('./models/Comment');
-var Notification= require('./models/Notification');
+var Post         = require('./models/Post');
+var User         = require('./models/User');
+var Message      = require('./models/Message');
+var Comment      = require('./models/Comment');
+var Notification = require('./models/Notification');
 
 
 var {ensureAuthenticated}=require('./config/auth');
@@ -118,8 +118,8 @@ app.post('/create',ensureAuthenticated,async(req,res)=>{
                 res.render('create.ejs',{msg: "Error: No file selected ",user: req.user,names:name,notifs:notifs});  
             }
             else{
-                console.log(req.file);
-                console.log(req.files);
+                // console.log(req.file);
+                // console.log(req.files);
                 res.render('create.ejs',{msg: "File uploaded successfully ",names:name,user: req.user,file: `uploads/${req.files[0].filename}` ,flag: '00',notifs:notifs});  
             }
         }
@@ -138,7 +138,7 @@ app.post('/changeprofpic',(req,res)=>{
             
             if(req.files == undefined)
             {
-                console.log(req.files);
+                // console.log(req.files);
                 res.redirect('/profile');
             }
             else{
@@ -164,7 +164,7 @@ app.post('/changeprofpic',(req,res)=>{
 io.on('connection',(socket)=>{
     // console.log(socket.id);
     socket.on('joinroom',async (data)=>{
-        console.log('work');
+        // console.log('work');
         socket.join(data.room);
         await Message.find({room: data.room},(err,messages)=>{
             if(err)
@@ -172,7 +172,7 @@ io.on('connection',(socket)=>{
                 console.log(err);
             }
             else{
-                console.log("work");
+                // console.log("work");
                 io.to(socket.id).emit('replyfromdb',messages);
             }
         });
@@ -190,7 +190,7 @@ io.on('connection',(socket)=>{
             to: data.to,
             comment: data.message
         });
-        console.log(newcomment);
+        // console.log(newcomment);
         newcomment.save();
         await Post.findOne({id:data.postid},(err,post)=>{
             if(err){
@@ -235,7 +235,7 @@ io.on('connection',(socket)=>{
     });
 
     socket.on('newmsg',async (data)=>{
-        console.log(data);
+        // console.log(data);
         var newmsg = new Message({
             id: Date.now(),
             message: data.message,
@@ -300,7 +300,7 @@ io.on('connection',(socket)=>{
                 userpic=name.profpic;
             }
         }
-        console.log('userpic:',userpic);
+        // console.log('userpic:',userpic);
         await Post.findOne({id:data.postid},(err,post)=>{
             if(err)
             {
@@ -310,13 +310,13 @@ io.on('connection',(socket)=>{
             notpic=post.image;
             // console.log(post.likesid.includes(data.username));
             // console.log(post.likesid);
-            console.log(post.likesid.includes(data.userid));
+            // console.log(post.likesid.includes(data.userid));
             if(post.likesid.includes(data.userid))
             {
                 likeflag=1;
             }
         });
-        console.log(likeflag);
+        // console.log(likeflag);
         await User.findOne({id:data.userid},(err,user)=>{
             if(err){
                 console.log(err);
@@ -348,7 +348,7 @@ io.on('connection',(socket)=>{
             });
             if(data.userid!=ownerid)
             {
-                console.log('goes to notif');
+                // console.log('goes to notif');
                 var newnotif= new Notification({
                     id: Date.now(),
                     from: data.userid,
@@ -358,7 +358,7 @@ io.on('connection',(socket)=>{
                     pic: notpic,
                     sendto: '/p/'+data.postid
                 });
-                console.log(newnotif);
+                // console.log(newnotif);
                 newnotif.save();
                 User.findOne({id:ownerid},(err,user)=>{
                     if(err){
@@ -403,7 +403,7 @@ io.on('connection',(socket)=>{
         likeflag=0;
     });
     socket.on('deletemsg',(data)=>{
-        console.log(data);
+        // console.log(data);
         Message.findOneAndDelete({id:data.msgid},{useFindAndModify:false},(err,msg)=>{
             if(err){
                 console.log(err);

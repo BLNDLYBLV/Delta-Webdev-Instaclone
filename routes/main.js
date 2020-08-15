@@ -154,7 +154,7 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
     }
     Post.findOne({username: postid},(err,post)=>{
         // console.log(posts);
-        console.log(profcomms);
+        // console.log(profcomms);
         res.render('profile.ejs',{user: req.user,posts: posts,comments: profcomms,names: name,notifs:notifs});
     });
     
@@ -217,7 +217,7 @@ app.get('/profile/:id',(req,res)=>{
                         profcomms=comms;
                     }
                 });
-                console.log(profcomms);
+                // console.log(profcomms);
                 Post.findOne({id: postid},(err,post)=>{
                     // console.log(posts);
                     
@@ -275,7 +275,7 @@ app.post('/create/uploads/:imageloc',(req,res)=>{
         image: imgloc,
         userpic: req.user.profpic
     });
-    console.log(req.user);
+    // console.log(req.user);
     User.findOneAndUpdate({id:req.user.id},{$push:{ownposts: newpost.id}},{useFindAndModify: false},(err,user)=>{
         if(err)
         {
