@@ -106,12 +106,16 @@ socket.on('likerepl',(data)=>{
     {
         likeicon.classList.remove="far";
         likeicon.className="fas fa-heart";
+        if(likenum){
         likenum.innerHTML= String(Number(likenum.innerHTML[0])+1)+" likes"
+        }    
     }
     else{
         likeicon.classList.remove="fas";
         likeicon.className="far fa-heart";
+        if(likenum){
         likenum.innerHTML= String(Number(likenum.innerHTML[0])-1)+" likes"
+        }    
     }
 });
 
