@@ -383,15 +383,17 @@ io.on('connection',(socket)=>{
                         if(err){
                             console.log(err);
                         }
-                        User.findOne({id:notif.to},(err,user)=>{
-                            if(err){
-                                console.log(err);
-                            }
-                            else{
-                                user.newnotifs=user.newnotifs+1;
-                                user.save();
-                            }
-                        });
+                        if(notif){
+                            User.findOne({id:notif.to},(err,user)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    user.newnotifs=user.newnotifs+1;
+                                    user.save();
+                                }
+                            });
+                        }
                     });
                 }
             });
@@ -501,7 +503,37 @@ io.on('connection',(socket)=>{
             });
         });    
     });
-    
+    socket.on('needlastmsg',async(data)=>{
+        var lastmsg;
+        var max=0;
+        await Message.find({room:data.roomid},(err,msgs)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                if(msgs)
+                {
+                    msgs.forEach(msg=>{
+                        if(Number(msg.id)>max){
+                            max=Number(msg.id);
+                        }
+                    });
+                }
+            }
+        });
+        if(max!=0){
+            await Message.findOne({id:String(max)},(err,msg)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    lastmsg=msg.message;
+                }
+            });
+            io.to(socket.id).emit('lastmsg',{roomid:data.roomid,msg:lastmsg});
+        }   
+    });
+
 });
 
 

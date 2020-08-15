@@ -16,6 +16,13 @@ var roomid;
 
 var currentmsgid;
 
+var needlastmsg=document.getElementsByClassName('needlastmsg');
+
+needlastmsg.forEach((need)=>{
+    var roomid=need.id;
+    socket.emit('needlastmsg',{roomid:roomid});
+});
+
 window.addEventListener('click',(e)=>{
     // console.log(e.target.id);
     if(e.target.id=='delmodal'){
@@ -66,6 +73,11 @@ socket.on('userpicreply',data=>{
     var chatpic=document.getElementById('chatpic'+data.userid);
 
     chatpic.src=data.userpic;
+});
+
+socket.on('lastmsg',(data)=>{
+    var needed=document.getElementById(data.roomid);
+    needed.innerHTML=data.msg;
 });
 
 socket.on("replyfromdb",messages=>{
