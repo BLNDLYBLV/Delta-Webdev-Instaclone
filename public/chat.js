@@ -94,7 +94,7 @@ socket.on("replyfromdb",messages=>{
             if(messages[i].from==userid)
             {
                 console.log('works');
-                chatbox.innerHTML+="<div style='margin-bottom:-10px;'><div class='mymsg' style='display: inline-block' >"+ messages[i].message +"</div><button onClick='delchatmodalon("+messages[i].id +")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;'></button></div>";
+                chatbox.innerHTML+="<div id='msg"+messages[i].id +"' style='margin-bottom:-10px;'><div class='mymsg' style='display: inline-block' >"+ messages[i].message +"</div><button onClick='delchatmodalon("+messages[i].id +")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;'></button></div>";
             }
             else
             {
@@ -122,13 +122,17 @@ function chat(){
 function delchatmodalon(id){
     currentmsgid=id;
     var delmodal=document.getElementById('delmodal');
+    
     delmodal.style.display='block';
 }
 
 function delmsg(){
     // console.log(currentmsgid);   
     socket.emit('deletemsg',{msgid: currentmsgid});
-    location.reload();
+    var delmsg=document.getElementById('msg'+currentmsgid);
+    delmsg.remove();
+    closedelmodal();
+    // location.reload();
 }
 socket.on('newchat',data=>{
     chatbox.innerHTML+="<div class='omsg' >"+ data.message +"</div>"
