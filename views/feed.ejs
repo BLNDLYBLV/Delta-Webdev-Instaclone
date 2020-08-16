@@ -55,7 +55,7 @@
     <div class="likebar" >
         <button id="likeicon<%= posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
         <button class="far fa-comment" onclick="icontoinput('<%= posts[i].id %>')" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
-        <form style="display: inline-block;margin-left: -3px;" action="/chat" method="GET">
+        <form style="display: inline-block;margin-left: -3px;" action="/chat/<%= posts[i].ownerid %>" method="POST">
             <button class="far fa-paper-plane" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>
         </form>
         <div onclick="likemodalon('<%=posts[i].id%>')" class="nooflikes" style="padding-left: 8px;padding-right: 8px;padding-bottom: 8px;">

@@ -148,7 +148,9 @@
                   <div style="padding: 15px; position: relative;top: 245px; margin-left: -5px; border-bottom: 1px solid rgba(0,0,0,0.1);height: 115px;width: 420px;">
                     <div id="likeicon<%=posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="padding: 6px; font-size: 27px;" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart"></div>
                     <div onclick="icontoinput('<%= posts[i].id %>')" style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
-                    <div style="padding: 6px; font-size: 27px;" class="far fa-paper-plane"></div>
+                    <form style="display: inline-block;" action="/chat/<%= posts[i].ownerid %>" method="POST">
+                      <button style="border:none;background-color: white; padding: 6px; font-size: 27px;" class="far fa-paper-plane"></button>
+                    </form> 
                     <% if(posts[i].likesid.length==0){ %>
                       <div><%= posts[i].likesid.length %> likes</div>
                     <% }else{ %>

@@ -1,6 +1,33 @@
 <%- include('partials/header') %> 
 <% var username,userpic; %>
 
+<% function givename(id){ %>
+  <% for( var x=0;x<names.length;x++){ %>
+  <%      if(names[x].id==id){ %>
+  <%          from=names[x].username;break; %>    
+  <%      } %>   
+  <% }%> 
+<% return from }%>  
+
+<% function givepic(id){ %>
+  <% for( var x=0;x<names.length;x++){ %>
+  <%      if(names[x].id==id){ %>
+  <%          from=names[x].profpic;break; %>    
+  <%      } %>   
+  <% }%> 
+<% return from }%>
+
+<% if(chatid && roomidd){ %>
+  <div id="there" style="display: none;">
+    <div id="useridd" style="display: none;"><%= user.id%></div>
+    <div id="chatidd" style="display: none;"><%= chatid %></div>
+    <div id="chattername" style="display: none;"><%= givename(chatid) %></div>
+    <div id="usernamee" style="display: none;"><%= user.username %></div>
+    <div id="chatpicture" style="display: none;"><%= givepic(chatid) %></div>
+    <div id="roomidd" style="display: none;"><%= roomidd %></div>
+  </div>  
+<% } %>
+
 <div class="container" style="overflow: hidden; margin-top: 20px;background-color: white;">
     <%= typeof msg != 'undefined' ? msg : '' %>
     <% msg=undefined;  %>
@@ -21,7 +48,7 @@
                 <div onclick="newchat('<%= user.id %>','<%= user.inchat[i].chatid %>','<%= username%>','<%= user.inchat[i].userpic %>','<%=user.username%>','<%= user.inchat[i].roomid %>')" id="chat<%= user.inchat[i].chatid %>" style="padding: 8px; width: 350px; " class="needprofpic row friendrow">
                     <!-- <script type="text/javascript">profpicaddition("<%= user.inchat[i].username %>");</script> -->
                     <div class="col-4">
-                        <img id="chatpic<%= user.inchat[i].chatid %>"  style="border-radius: 50%; width: 55px;height: 55px;margin-left: 15px; " src="" alt="">
+                        <img id="chatpic<%= user.inchat[i].chatid %>"  style="border-radius: 50%; width: 55px;height: 55px;margin-left: 15px; " src="<%= givepic(user.inchat[i].chatid) %> " alt="">
                     </div>
                     <div class="col-6" style="width: 30px; margin-left: -15px;margin-top: 3px;">
                         <div>

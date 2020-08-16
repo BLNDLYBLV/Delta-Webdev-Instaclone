@@ -110,7 +110,7 @@ app.get('/feed',ensureAuthenticated,async(req,res)=>{
 });
 
 app.get('/chat',ensureAuthenticated,(req,res)=>{
-    res.render('chat.ejs',{msg: msgerrchat,user: req.user,names:name,notifs:notifs});
+    res.render('chat.ejs',{msg: msgerrchat,user: req.user,names:name,notifs:notifs,chatid:null,roomidd:null});
     msgerrchat=undefined;
 });
 
@@ -124,6 +124,14 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
     let profcomms=[];
     let i;
     let postid;
+    await Notification.find({to:req.user.id},(err,notifications)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            notifs=notifications;
+        }
+    });
     for(i=0;i<req.user.ownposts.length;i++)
     {
         await Comment.find({to: req.user.id},(err,comms)=>{
@@ -339,6 +347,7 @@ app.post('/chat',ensureAuthenticated,(req,res)=>{
 app.post('/chat/:id',ensureAuthenticated,(req,res)=>{
     var person=req.params.id;
     var f1=0;
+    var nowroom;
 
     User.findOne({id: person},(err,user)=>{
         if(err){
@@ -352,12 +361,15 @@ app.post('/chat/:id',ensureAuthenticated,(req,res)=>{
             else
             {
                 req.user.inchat.forEach((prof) => {
-                    if(prof==person)
+                    if(prof.chatid==person)
                     {
                         f1=1;
+                        nowroom=prof.roomid
                     }
                 });
                 if(f1==0){
+                    var rand=Date.now();
+
                     User.findOneAndUpdate({id: req.user.id},{$push:{inchat: {chatid: person,userpic: user.profpic,roomid: String(rand)}}},{useFindAndModify: false},(err,user)=>{
                         if(err){
                             console.log(err);                            
@@ -368,8 +380,11 @@ app.post('/chat/:id',ensureAuthenticated,(req,res)=>{
                             console.log(err);                            
                         }
                     });
+                    res.render('chat.ejs',{msg: msgerrchat,user: req.user,names:name,notifs:notifs,chatid:person,roomidd:rand});
                 }
-                res.redirect('/chat');
+                else{
+                    res.render('chat.ejs',{msg: msgerrchat,user: req.user,names:name,notifs:notifs,chatid:person,roomidd:nowroom});
+                }
             }
         }
     });
