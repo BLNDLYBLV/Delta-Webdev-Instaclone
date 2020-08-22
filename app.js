@@ -184,7 +184,7 @@ io.on('connection',(socket)=>{
         var fropic;
 
         var newcomment= new Comment({
-            id: Date.now(),
+            id: data.id,
             postid: data.postid,
             from: data.from,
             to: data.to,

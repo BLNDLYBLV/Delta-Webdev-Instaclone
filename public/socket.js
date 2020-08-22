@@ -26,6 +26,7 @@ for(var i=0;i<needcommprofpicc.length;i++)
     }))
 }
 
+var idid; 
 
 function comment(postid,fromid,fromname,to) {
     var comminp=document.getElementById('feedcomminp'+postid);
@@ -33,16 +34,29 @@ function comment(postid,fromid,fromname,to) {
     var messag=comminp.value;
     if(messag!='')
     {
+        idid=Date.now();
         socket.emit('newcomment',{
+            id:idid,
             postid: postid,
             from: fromid,
             to: to,
             message: messag 
         });
         comminp.value='';
-        commbox.innerHTML+='<div style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong>'+ fromname +' ' +'  </strong><span style="font-weight: 350; font-size:14px;"> '+ messag +'</span></div>';
+        commbox.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong>`+ fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ messag +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
+        <div id="delmodal`+ idid +`" class="postmodal">
+                        <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                            <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                            <hr style="margin-top: 35px;margin-bottom: 0px;">
+                            <button onclick="delcomm(`+ idid +`);" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                            <hr style="margin-top: 0px;margin-bottom: 0px;">
+                            <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                        </div>
+                    </div>`;
     }
 }
+
+
 
 function profpicaddition(postid){
     // console.log('onloadworks');
