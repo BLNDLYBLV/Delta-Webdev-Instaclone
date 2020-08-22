@@ -168,7 +168,15 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
     
 });
 
-app.get('/notification',(req,res)=>{
+app.get('/notification',async(req,res)=>{
+    await Notification.find({to:req.user.id},(err,notifications)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            notifs=notifications;
+        }
+    });
     User.findOneAndUpdate({id:req.user.id},{newnotifs: 0},{useFindAndModify:false},(err,user)=>{
         if(err){
             console.log(err);
