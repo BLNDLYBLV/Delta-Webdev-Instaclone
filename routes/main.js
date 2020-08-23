@@ -11,6 +11,9 @@ var User= require('../models/User');
 var Comment= require('../models/Comment');
 var Notification= require('../models/Notification');
 var Message= require('../models/Message');
+var Reply = require('../models/Reply');
+
+
 
 const e = require('express');
 const { forEach } = require('async');
@@ -124,6 +127,15 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
     let profcomms=[];
     let i;
     let postid;
+    var replies;
+    await Reply.find({},(err,reps)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            replies=reps;
+        }
+    });
     await Notification.find({to:req.user.id},(err,notifications)=>{
         if(err){
             console.log(err);
@@ -163,10 +175,12 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
     Post.findOne({username: postid},(err,post)=>{
         // console.log(posts);
         // console.log(profcomms);
-        res.render('profile.ejs',{user: req.user,posts: posts,comments: profcomms,names: name,notifs:notifs});
+        res.render('profile.ejs',{user: req.user,posts: posts,comments: profcomms,names: name,notifs:notifs,replies:replies});
     });
     
 });
+
+
 
 app.get('/notification',async(req,res)=>{
     await Notification.find({to:req.user.id},(err,notifications)=>{
@@ -185,9 +199,18 @@ app.get('/notification',async(req,res)=>{
     res.render('notifications.ejs',{user: req.user,names: name,notifs:notifs});
 })
 
-app.get('/profile/:id',(req,res)=>{
+app.get('/profile/:id',async(req,res)=>{
     var getid = req.params.id;
     let profcomms=[];
+    var replies;
+    await Reply.find({},(err,reps)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            replies=reps;
+        }
+    });
     if(getid==req.user.id)
     {
         res.redirect('/profile');
@@ -237,7 +260,7 @@ app.get('/profile/:id',(req,res)=>{
                 Post.findOne({id: postid},(err,post)=>{
                     // console.log(posts);
                     
-                    res.render('oprofile.ejs',{user:req.user,ouser: user,comments:profcomms,posts: posts,names: name,notifs:notifs});
+                    res.render('oprofile.ejs',{user:req.user,ouser: user,comments:profcomms,posts: posts,names: name,notifs:notifs,replies:replies});
                 });
             }
         });
@@ -249,6 +272,16 @@ app.get('/p/:postid',async(req,res)=>{
     var postcomments;
     var postinguser;
     var realpost;
+    var replies;
+    await Reply.find({},(err,reps)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            replies=reps;
+        }
+    })
+
     await Comment.find({postid:postid},(err,comms)=>{
         if(err){
             console.log(err);
@@ -273,10 +306,11 @@ app.get('/p/:postid',async(req,res)=>{
             postinguser=user;
         }
     });
+
     // console.log(postcomments);
     // console.log(postinguser);
     // console.log(realpost);
-    res.render('post.ejs',{names:name,user:req.user,ouser:postinguser,post:realpost,comments:postcomments,notifs:notifs});
+    res.render('post.ejs',{names:name,user:req.user,ouser:postinguser,post:realpost,comments:postcomments,notifs:notifs,replies:replies});
 });
 
 app.post('/create/uploads/:imageloc',(req,res)=>{

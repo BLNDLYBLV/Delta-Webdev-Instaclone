@@ -1,3 +1,5 @@
+// const Reply = require("../models/Reply");
+
 var socket=io.connect("http://localhost:3000");
 // var arr=[];
 // var prevpost=[]
@@ -26,33 +28,84 @@ for(var i=0;i<needcommprofpicc.length;i++)
     }))
 }
 
+var isreply=0;
+
+var reporigcomm;
+
+function replyinputon(user,postid,commid){
+    reporigcomm=commid;
+    var comminp=document.getElementById('feedcomminp'+postid);
+    comminp.style.color='blue';
+    comminp.value='@'+user+': ';
+    comminp.style.color='black';
+    comminp.focus();
+    isreply=1;
+}
+
+
 var idid; 
 
-function comment(postid,fromid,fromname,to) {
+function comment(postid,fromid,fromname,to,commid) {
     var comminp=document.getElementById('feedcomminp'+postid);
     var commbox=document.getElementById('commentbox'+postid);
     var messag=comminp.value;
     if(messag!='')
     {
         idid=Date.now();
-        socket.emit('newcomment',{
-            id:idid,
-            postid: postid,
-            from: fromid,
-            to: to,
-            message: messag 
-        });
-        comminp.value='';
-        commbox.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong>`+ fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ messag +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
-        <div id="delmodal`+ idid +`" class="postmodal">
-                        <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
-                            <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
-                            <hr style="margin-top: 35px;margin-bottom: 0px;">
-                            <button onclick="delcomm(`+ idid +`);" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
-                            <hr style="margin-top: 0px;margin-bottom: 0px;">
-                            <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
-                        </div>
-                    </div>`;
+        if(isreply==0){
+            socket.emit('newcomment',{
+                id:idid,
+                postid: postid,
+                from: fromid,
+                to: to,
+                message: messag 
+            });
+            comminp.value='';
+            commbox.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong>`+ fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ messag +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
+            <div id="delmodal`+ idid +`" class="postmodal">
+                            <div style="width: 400px;height: 185px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                                <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                                <hr style="margin-top: 35px;margin-bottom: 0:px;">
+                                <button onclick="delcomm(`+ idid +`);" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                                <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                            </div>
+                        </div>`;
+        }
+        else{
+            var msgloc='';
+            var usrnamloc='';
+            var usrid;
+            for(var i=messag.indexOf('@')+1;i<messag.length;i++){
+                if(messag[i]!=':'){
+                    usrnamloc+=messag[i];
+                }
+                else{
+                    msgloc=messag.substr(i+1,500);
+                    break;
+                }
+            }
+            socket.emit('newreply',{
+                id: idid,
+                from: fromid,
+                to: to,
+                message: messag,
+                postid:postid,
+                origcommid: reporigcomm
+            });
+            console.log(commid);
+            comminp.value='';
+            commbox.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong style="margin-left: 20px" >` + fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ msgloc +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
+            <div id="delmodal`+ idid +`" class="postmodal">
+                            <div style="width: 400px;height: 205px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                                <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                                <hr style="margin-top: 35px;margin-bottom: 0:px;">
+                                <button onclick="delcomm(`+ idid +`);" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                                <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                            </div>
+                        </div>`;
+        }
     }
 }
 

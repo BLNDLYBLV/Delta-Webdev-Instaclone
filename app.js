@@ -19,7 +19,7 @@ var User         = require('./models/User');
 var Message      = require('./models/Message');
 var Comment      = require('./models/Comment');
 var Notification = require('./models/Notification');
-
+var Reply        = require('./models/Reply');
 
 var {ensureAuthenticated}=require('./config/auth');
 
@@ -233,7 +233,83 @@ io.on('connection',(socket)=>{
         }
         // console.log(newcomment);
     });
+    socket.on('newreply',async (data)=>{
+        var msgloc='';
+        var usrnamloc='';
+        var usrid;
+        for(var i=data.message.indexOf('@')+1;i<data.message.length;i++){
+            if(data.message[i]!=':'){
+                usrnamloc+=data.message[i];
+            }
+            else{
+                msgloc=data.message.substr(i+1,500);
+                break;
+            }
+        }
+        await User.findOne({username: usrnamloc},(err,user)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                // console.log(user);
+                usrid=user.id;
+            }
+        });
+        // console.log(usrid);
+        var newreply = new Reply({
+            id:data.id,
+            from:data.from,
+            to:data.to,
+            message:msgloc,
+            origcommid:data.origcommid,
+            byuser:usrid
+        });
+        // console.log(newreply);
+        newreply.save();
+        var postimage;
+        var fromname;
+        var fropic;
 
+        await Post.findOne({id:data.postid},(err,post)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                postimage=post.image;
+            }
+        });
+        await User.findOne({id: data.from},(err,user)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                fromname=user.username;
+                frompic=user.profpic;
+            }
+        });
+        if(data.from!=data.to){
+            var newnotif= new Notification({
+                id: Date.now(),
+                relatedid:newreply.id,
+                from: data.from,
+                to: data.to,
+                message: ' commented: '+data.message,
+                userpic: frompic,
+                pic: postimage,
+                sendto: '/p/'+data.postid
+            });
+            newnotif.save();
+            User.findOne({id:data.to},(err,user)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    user.newnotifs=user.newnotifs+1;
+                    user.save();
+                }
+            });
+        }
+    });
     socket.on('newmsg',async (data)=>{
         // console.log(data);
         var newmsg = new Message({
@@ -253,11 +329,19 @@ io.on('connection',(socket)=>{
                 console.log(err);
             }
         });
+
+        Reply.findOneAndDelete({id:data.commid},{useFindAndModify:false},(err,comm)=>{
+            if(err){
+                console.log(err);
+            }
+        });
+        
         Notification.findOneAndDelete({relatedid:data.commid},{useFindAndModify:false},(err,notif)=>{
             if(err){
                 console.log(err);
             }
             else{
+                if(notif){
                 User.findOne({id:notif.to},(err,user)=>{
                     if(err){
                         console.log(err);
@@ -266,7 +350,7 @@ io.on('connection',(socket)=>{
                         user.newnotifs=user.newnotifs-1;
                         user.save();
                     }
-                });
+                });}
             }
         });
         

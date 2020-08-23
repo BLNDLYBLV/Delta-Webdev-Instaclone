@@ -39,6 +39,25 @@
                   <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
                   <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
                   <% if(comm.from==user.id){ %><button onclick='delchatmodalon("<%= comm.id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button> <% } %>
+                  <button onclick="replyinputon('<%= from %>','<%= post.id %>','<%= comm.id %>')" style="background-color: white;border: none;font-size: 13px;margin-left: 10px;color: lightgrey;">Reply</button>  
+                  <% for(var y=0;y<replies.length;y++){ %>
+                    <% if(replies[y].origcommid==comm.id){ %>
+                      <div id="comm<%= replies[y].id %>" style="margin-left: -5px; margin-bottom: 0px;">
+                        <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong style="margin-left: 20px;"> <%= givename(replies[y].from) %> </strong> </span>
+                        <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= replies[y].message %> </span>
+                        <% if(replies[y].from==user.id){ %><button onclick='delchatmodalon("<%= replies[y].id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button> <% } %>
+                        <div id="delmodal<%= replies[y].id %>"  class="postmodal">
+                          <div style="border: 1px solid lightgray; width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                              <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                              <hr style="margin-top: 35px;margin-bottom: 0px;">
+                              <button onclick="delcomm('<%= replies[y].id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                              <hr style="margin-top: 0px;margin-bottom: 0px;">
+                              <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                          </div>
+                        </div>
+                      </div>
+                  <% } %>
+                  <% } %>
                   <div id="delmodal<%= comm.id %>"  class="postmodal">
                     <div style="border: 1px solid lightgray; width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
                         <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
@@ -67,7 +86,7 @@
           </div>
         <% } %> 
         <div style="position: relative;top: 42px;">
-          <form style="display: inline-block;" onsubmit="comment('<%= post.id %>','<%= user.id %>','<%= user.username %>','<%= post.ownerid %>');return false;">
+          <form style="display: inline-block;" onsubmit="comment('<%= post.id %>','<%= user.id %>','<%= user.username %>','<%= post.ownerid %>','<');return false;">
             <input style="width: 330px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= post.id %>">
             <input type="submit" value="" style="display: none;">
           </form> 
@@ -90,25 +109,32 @@
     //   form.submit();
     // }
     
+    // var isreply=0;
+
     var nav=document.getElementsByClassName('fix-top')[0];
-    nav.style.zIndex='0';
+    // nav.style.zIndex='0';
     
     function icontoinput(postid){
         var comminp=document.getElementById('feedcomminp'+postid);
         comminp.focus();
     }
-
+    
     function delchatmodalon(commid){
         presentcommid=commid;
         var delcommmodal=document.getElementById('delmodal'+commid);
+        var navbar=document.getElementsByTagName('nav')[0];
         delcommmodal.style.display='block';
+        navbar.style.zIndex=0;
     }
     function closedelmodal(){
         var delcommmodal=document.getElementById('delmodal'+presentcommid);
+        var navbar=document.getElementsByTagName('nav')[0];
+        navbar.style.zIndex=2;
         delcommmodal.style.display='none';        
     }
     function delcomm(commid){
         socket.emit('delcomment',{commid:commid});
+        console.log(commid);
         var comment=document.getElementById('comm'+commid);
         comment.remove();
         closedelmodal();
