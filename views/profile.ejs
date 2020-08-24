@@ -68,10 +68,13 @@
       </form> 
     </div>
     <hr>
-    <div class="row">
-    <% let i;  %>
-    <% for(i=0;i<posts.length;i++){  %>
-        
+    <!-- <div>
+      <button onclick="changetophoto();">Photos</button>
+      <button onclick="changetovideo();">Videos</button>
+    </div> -->
+    <div class="row" id="photo">
+    <% for(var i=0;i<posts.length;i++){  %>
+        <% if(posts[i].type!='video'){%>
             <div style="margin-bottom: 20px ;" onclick="modalposton('<%= posts[i].id %>')" class="col-4 profhov">
                 <i class="fa fa-heart profheart" style=" color: white; position: absolute;top: 155px;left: 165px;" >
                     <span style="font-family: Arial, Helvetica, sans-serif;">
@@ -228,7 +231,173 @@
                 </span>
               </div>
             </div>
-        <%}%>
+        <%}}%>
+    </div> 
+    <div style="margin: auto;width: max-content;margin-top: 50px;" >
+      Videos
+    </div>
+    <hr>
+    <div id="video" class="row" style="text-align: center;">
+        <% for(var i=0;i<posts.length;i++){ %>
+          <% if(posts[i].type=='video'){ %>
+          
+          <div style="margin-bottom: 20px ;" onclick="modalposton('<%= posts[i].id %>')" class="col-4 profhov">
+            <i class="fa fa-heart profheart" style=" color: white; position: absolute;top: 155px;left: 165px;" >
+                <span style="font-family: Arial, Helvetica, sans-serif;">
+                    <%= posts[i].likesid.length%>
+                </span>
+            </i>
+            <video class="img-fluid profimg profhov" style="margin-top: -50px;margin-bottom: -20px; width: 350px;height: 350px;" src="/uploads/<%= posts[i].image  %>" alt="">
+        </div>
+        <div id="modalof<%= posts[i].id %>" class="postmodal" >
+          <div id="modalclose<%= posts[i].id %>" style="color: #fff;font-size: xx-large; position: fixed; top:1.5% ;left: 96%;" class="fa fa-times"></div>
+          <div class="row" style="position: fixed;left: 20%;top: 10%; width: 1015px;height: 630px;background-color: white;">
+            <video class="col-6" controls style="padding: 0%; width: 595px;height: 630px;"  src="/uploads/<%= posts[i].image  %>" alt=""></video> 
+            <span class="col-6" style="border-left: 1px solid lightgray; padding: 0%; display: inline-block;">
+              <div style=" width: 510px; border-bottom: 1px solid rgba(0,0,0,0.1); position: absolute;top: 8px;padding: 10px;padding-bottom: 15px;">
+                <form action="/profile/<%= user.id %>" style="display: inline-block;">
+                  <button style="border: none;background-color: white;padding: 0;text-align: left;position: relative;left: -170px;">
+                    <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
+                    <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                  </button>
+                </form>
+                <span onclick="postchangemodalon('<%= posts[i].id %>')" style="float: right;font-weight: 600;margin-top: 10px;margin-right: 15px;" class="far fa-ellipsis-h"></span>
+                <div id="postchangemodal<%= posts[i].id %>" class="postmodal">
+                  <div style="width: 400px;height: 120px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                      <div onclick="closechangebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
+                      <hr style="margin-top: 35px;margin-bottom: 0px;">
+                      <form action="/p/<%= posts[i].id %>">
+                      <button style="border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Go to post</button>
+                      </form>
+                      <hr style="margin-top: 0px;margin-bottom: 0px;">
+                      <form onsubmit="closechangebtn();deletemodalon();return false">
+                        <button style="color: rgb(200,30,100);font-weight: 600; border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Delete post</button>
+                      </form>
+                  </div>
+                </div>
+                <div id="postdeletemodal<%= posts[i].id %>" class="postmodal">
+                  <div style="width: 400px;height: 130px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                      <div style="float: left;margin-left: 165px;margin-top: 12px;">Delete post</div>
+                      <div onclick="closedeletebtn()" style="float: right;margin-top: 12px;margin-right: 15px;font-weight: 501;font-size: medium;" class="fa fa-times"></div>
+                      <hr style="margin-top: 45px;margin-bottom: 0px;">
+                      <form action="/delete/<%= posts[i].id %>" method="POST">
+                      <button style="color: rgb(200,30,100);border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">Yes</button>
+                      </form>
+                      <hr style="margin-top: 0px;margin-bottom: 0px;">
+                      <form onsubmit="closedeletemodal();return false">
+                        <button style="font-weight: 600; border: none;width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;">No</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+              <div id="commentbox<%= posts[i].id %>" style="position: relative;left: -145px; overflow: auto;  height: 420px;width: 505px; position: absolute;top: 80px;padding: 10px;">
+                <div style="margin-bottom: 15px;">
+                  <form action="/profile/<%= user.id %>" style="display: inline-block;margin: 0;">
+                    <button style="border: none;background-color: white;padding: 0;">
+                      <img style="margin-left: 5px; width: 40px;height: 40px; border-radius: 50% ;" src="<%= user.profpic %>" alt="">
+                      <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 16px;font-weight: 600;"> <%= user.username %> </span>
+                    </button>
+                  </form>
+                  <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= posts[i].caption %> </span>
+                </div>
+                  <% maxcomm=0; %>
+                  <% commflag=0; %>
+                  <% if(comments!=null){%>
+                      <%comments.forEach(comm=>{ %>    
+                      <% if(comm.postid==posts[i].id ){ %>
+                        <% for( var x=0;x<names.length;x++){ %>
+                        <%      if(names[x].id==comm.from){ %>
+                        <%          from=names[x].username;break; %>    
+                        <%      } %>   
+                        <% }%>  
+                        <div id="comm<%= comm.id %>" style="margin-left: 15px; margin-bottom: 7px;">
+                          <form style="display: inline-block;" action="/profile/<%= comm.from %>">
+                            <button style="padding: 0;border: none;background-color: white;">
+                              <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong> <%= from %> </strong> </span>
+                            </button>
+                          </form>
+                          <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= comm.comment %> </span>
+                          <button onclick='delchatmodalon("<%= comm.id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button>
+                          <form action="/p/<%= posts[i].id %>" style="display: inline-block;">
+                          <button style="background-color: white;border: none;font-size: 13px;margin-left: 10px;color: lightgrey;">Reply</button>  
+                          </form>   
+                          <% for(var y=0;y<replies.length;y++){ %>
+                              <% if(replies[y].origcommid==comm.id){ %>
+                                <div id="comm<%= replies[y].id %>" style="margin-left: -5px; margin-bottom: 0px;">
+                                  <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong style="margin-left: 20px;"> <%= givename(replies[y].from) %> </strong> </span>
+                                  <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= replies[y].message %> </span>
+                                  <button onclick='delchatmodalon("<%= replies[y].id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button>
+                                  <div id="delmodal<%= replies[y].id %>"  class="postmodal">
+                                    <div style="border: 1px solid lightgray; width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                                        <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                                        <hr style="margin-top: 35px;margin-bottom: 0px;">
+                                        <button onclick="delcomm('<%= replies[y].id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                                        <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                        <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                                    </div>
+                                  </div>
+                                </div>
+                            <% } %>
+                            <% } %>
+                          <div id="delmodal<%= comm.id %>" class="postmodal">
+                            <div style="width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
+                                <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>
+                                <hr style="margin-top: 35px;margin-bottom: 0px;">
+                                <button onclick="delcomm('<%= comm.id %>');" style="border: none;color: rgb(200,30,80);font-weight: 700; width: 390px;margin-left: 5px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> Yes </button>
+                                <hr style="margin-top: 0px;margin-bottom: 0px;">
+                                <button onclick="closedelmodal();" style="border: none;width: 390px;margin-left: 5px;font-weight: 400;font-size: 14px; background-color: white; margin-top: 7px;margin-bottom: 7px;"> No </button>
+                            </div>
+                          </div>
+                        </div>
+                          <% maxcomm++; %>
+                      <% } %>        
+                  <% })} %>    
+              </div>
+              <div style="padding: 15px; position: relative;top: 460px;border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1);height: 115px;width: 505px;text-align: left;">
+                <div id="likeicon<%=posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="padding: 6px; font-size: 27px;" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart"></div>
+                <div onclick="icontoinput('<%= posts[i].id %>');" style="padding: 6px; font-size: 27px;" class="far fa-comment"></div>
+                <form style="display: inline-block;" action="/chat">
+                  <button style="padding: 4px; font-size: 27px;border: none;background-color: white;" class="far fa-paper-plane"></button>
+                </form>
+                <% if(posts[i].likesid.length==0){ %>
+                  <div><%= posts[i].likesid.length %> likes</div>
+                <% }else{ %>
+                  <div style="padding-left: 10px;">
+                    Liked by <%= givename(posts[i].likesid[0]) %> <span> <% if(posts[i].likesid.length==2){%><%=','+givename(posts[i].likesid[1])%><% } %> <% if(posts[i].likesid.length>2){%><%=' and '+(posts[i].likesid.length-1)%> <button onclick="likemodalon('<%= posts[i].id %>')" style="padding: 0%; border: none; background-color: white; font-weight: 600;">others</button> <% } %> </span>
+                  </div>
+                <% } %> 
+                <div id="likemodal<%= posts[i].id %>" class="likemodal">
+                  <div style=" background-color: white;width: 400px;height: 400px;position: fixed;top: 50%;left: 50%;margin-top: -210px;margin-left: -180px;border-radius: 20px;">
+                      <div style="border-bottom: 1px solid lightgray;">
+                          <div style="display: inline-block;margin-left: 30px;font-size: large; margin-top:20px ;padding-bottom: 15px;">Likes</div>
+                          <div style="float: right;margin-top: 20px;margin-right: 25px;" onclick="closebtn('<%= posts[i].id %>')" class="fa fa-times"></div>
+                      </div>    
+                      <div>
+                          <% for(var z=0;z<posts[i].likesid.length;z++){ %>
+                              <form action="/profile/<%= posts[i].likesid[z] %>" method="GET">
+                                  <button style="border: none;background-color: white;">
+                                      <div style="padding: 10px ;margin-left: 10px;">
+                                          <img src="<%= givepic(posts[i].likesid[z]) %>" style="width: 45px;height: 45px;border-radius: 50%;" alt="">
+                                          <div style="display: inline-block; margin-left: 10px;position: relative;top: 2px;"><%= givename(posts[i].likesid[z]) %></div>
+                                      </div>
+                                  </button>   
+                              </form>
+                          <% } %>
+                      </div>
+                  </div>
+              </div>
+                <div style="position: relative;top: 42px;">
+                  <form onsubmit="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>');return false">
+                    <input style="width: 400px; padding: 10px;border: none;" type="text" placeholder="Add comment" name="" id="feedcomminp<%= posts[i].id %>">
+                    <input type="submit" value="" style="display: none;">
+                    <button onclick="comment('<%= posts[i].id %>','<%= user.id %>','<%= user.username %>','<%= posts[i].ownerid %>')" style="border: none;background-color: rgba(0,0,0,0); color: rgb(0,123,250);font-weight: bold;font-size: medium;margin-left: 7px;">Post</button>
+                  </form>  
+                </div> 
+              </div>
+            </span>
+          </div>
+        </div>
+        <% }} %>
     </div>        
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -314,11 +483,22 @@
   var form =document.getElementById('profpicform') ;
   var postidloc;
   var presentcommid;
-  
+  var video=document.getElementById('video');
+  var photo=document.getElementById('photo');
 
   // var handleFiles = () => {
   //   console.log("works");
   //   form.submit();
+  // }
+  // function changetophoto(){
+  //   photo.style.display='initial';
+  //   video.style.display='none';
+  // }
+  // function changetovideo(){
+  //   console.log(photo.style.display);
+  //   // photo.style.display='none';
+  //   video.style.display='block';
+
   // }
   function delchatmodalon(commid){
       presentcommid=commid;
@@ -364,11 +544,15 @@
 // fileInput.addEventListener("change", handleFiles);
 window.addEventListener('click',(e)=>{
   // console.log("goes inside");
-  console.log(e.target);
+  // console.log(e.target);
   if(e.target.id=='modalof'+postidloc)
   {
     var postmodal=document.getElementById('modalof'+postidloc);
     postmodal.style.display='none';
+    var videos =document.getElementsByTagName('video');
+    for(var i=0;i<videos.length;i++){
+      videos[i].pause();
+    }
   }
   if(e.target.id=='postchangemodal'+postidloc)
   {
@@ -389,6 +573,10 @@ function modalposton(postid) {
     // console.log("listens");
     // var postmodal=document.getElementById('modalof'+postid);
     postmodal.style.display='none';
+    var videos =document.getElementsByTagName('video');
+    for(var i=0;i<videos.length;i++){
+      videos[i].pause();
+    }
   });
   postidloc=postid;
   postmodal.style.display='block';

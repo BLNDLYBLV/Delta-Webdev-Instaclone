@@ -8,7 +8,8 @@ var Postschema = new mongoose.Schema({
     seenby:[String],
     likesid: [String],
     image: String,
-    userpic: String
+    userpic: String,
+    type:  String
 });
 
 var Post = mongoose.model("post",Postschema);    

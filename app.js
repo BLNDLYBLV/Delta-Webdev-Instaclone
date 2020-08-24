@@ -62,15 +62,23 @@ let storage = multer.diskStorage({
     }
 });
 
+var typ;
+
 let upload = multer({
     storage: storage,
     fileFilter: (req,file,cb)=>{
         let filetypes = /jpeg|jpg|png|gif/;
+        let videotype= /mpeg4|mp4/;
         let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         let mimetype = filetypes.test(file.mimetype);
-
+        let isvideo = videotype.test(path.extname(file.originalname).toLowerCase());
         if(mimetype && extname)
         {
+            typ='photo';
+            return cb(null,true);
+        }
+        else if(isvideo){
+            typ='video';
             return cb(null,true);
         }
         else
@@ -121,7 +129,8 @@ app.post('/create',ensureAuthenticated,async(req,res)=>{
             else{
                 // console.log(req.file);
                 // console.log(req.files);
-                res.render('create.ejs',{msg: "File uploaded successfully ",names:name,user: req.user,file: `uploads/${req.files[0].filename}` ,flag: '00',notifs:notifs});  
+                // console.log(typ);
+                res.render('create.ejs',{msg: "File uploaded successfully ",names:name,user: req.user,file: `uploads/${req.files[0].filename}` ,flag: '00',notifs:notifs,typ:typ});  
             }
         }
     });

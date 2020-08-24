@@ -24,11 +24,16 @@
     </div>
     <br>
     <div>
-        <img src="<%= typeof file != 'undefined' ? file : ''  %>" alt="" style="width: 500px;height: 500px; margin-bottom: 25px;" class="img-fluid">
+        <% if(typ=='photo'){ %>
+            <img src="<%= typeof file != 'undefined' ? file : ''  %>" alt="" style="width: 500px;height: 500px; margin-bottom: 25px;" class="img-fluid">
+        <% }else if(typ=='video'){ %>
+            <video controls src="<%= typeof file != 'undefined' ? file : ''  %>" alt="" style="display: <%= typeof file != 'undefined' ? 'block' : 'none'  %>; width: 500px;height: 500px; margin-bottom: 25px;" class="img-fluid">
+        <% } %>    
     </div>
     <div style=" display: <%= typeof flag != 'undefined' ? 'initial' : 'none'  %> ;">
         <form action="/create/<%= typeof file != 'undefined' ? file  : ''  %>" method="POST">
             <textarea name="caption" id="" cols="70" rows="1" placeholder="Caption" style="position: relative; top: 7px;"></textarea>
+            <input type="text" name="typ" style="display: none;" value="<%= typ %>">
             <button class="postbtn">
                 Post
             </button>

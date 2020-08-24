@@ -49,8 +49,12 @@
             </div>
         </div>
     </div>
-    <div>
+    <div style="padding: 0%;margin: 0%;">
+        <% if(posts[i].type=='video'){ %>
+            <video controls style="background-color: white; width: 650px;height: 600px;" src="/uploads/<%= posts[i].image %>" ></video>
+        <% }else{ %>
         <img ondblclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" style="width: 650px;height: 600px;" src="/uploads/<%= posts[i].image %>" alt="">
+        <% } %>    
     </div>
     <div class="likebar" >
         <button id="likeicon<%= posts[i].id %>" onclick="like('<%= posts[i].id %>','<%= user.id %>','<%= posts[i].likesid %>')" class="<%= posts[i].likesid.includes(user.id) ? 'fas' : 'far' ;%> fa-heart" style="padding: 5px;padding-left: 6px;padding-right: 6px; font-size: 25px; background-color: white;border:none"></button>

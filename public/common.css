@@ -288,7 +288,7 @@ button:focus{
     color: rgb(250, 0, 54);
 }
 
-.fas:focus,.far:focus{
+video,.fas:focus,.far:focus{
     border: none;
     outline: none;
 }
@@ -296,6 +296,11 @@ button:focus{
 @keyframes likepop{
     from{font-size: 5px;}
     to {font-size: 25px;}
+}
+
+video{
+    padding: 0;
+    margin: 0;
 }
 
 .addmodal{

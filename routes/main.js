@@ -119,7 +119,7 @@ app.get('/chat',ensureAuthenticated,(req,res)=>{
 
 app.get('/create',ensureAuthenticated,(req,res)=>{
     
-    res.render('create.ejs',{user: req.user,names: name,notifs:notifs});
+    res.render('create.ejs',{user: req.user,names: name,notifs:notifs,typ:''});
 });
 
 app.get('/profile',ensureAuthenticated,async(req,res)=>{
@@ -165,8 +165,9 @@ app.get('/profile',ensureAuthenticated,async(req,res)=>{
                 // console.log(postid);
                 // console.log(post);
             
-                
+                // if(post.type!='video' || post.type==undefined ){
                 posts.push(post);
+                // }
                 // console.log(posts);
 
             }
@@ -317,13 +318,15 @@ app.post('/create/uploads/:imageloc',(req,res)=>{
     let imgloc = req.params.imageloc;
     let caption = req.body.caption;
     let ownerid = req.user.id;
+    let typ     = req.body.typ;
     // console.log(req.user._id);
     let newpost = new Post({
         id: Date.now(),
         caption: caption,
         ownerid: ownerid,
         image: imgloc,
-        userpic: req.user.profpic
+        userpic: req.user.profpic,
+        type: typ
     });
     // console.log(req.user);
     User.findOneAndUpdate({id:req.user.id},{$push:{ownposts: newpost.id}},{useFindAndModify: false},(err,user)=>{
