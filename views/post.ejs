@@ -46,6 +46,7 @@
                         <span style="position: relative;top: 1.5px; margin-left: 15px;font-size: 15px;font-weight: 400;"><strong style="margin-left: 20px;"> <%= givename(replies[y].from) %> </strong> </span>
                         <span style="position: relative;top: 1.5px; margin-left: 5px;font-size: 14px;font-weight: 350;"> <%= replies[y].message %> </span>
                         <% if(replies[y].from==user.id){ %><button onclick='delchatmodalon("<%= replies[y].id %>")' class='far fa-trash-alt del' style='color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;'></button> <% } %>
+                        <button onclick="replyinputon('<%= from %>','<%= post.id %>','<%= comm.id %>')" style="background-color: white;border: none;font-size: 13px;margin-left: 10px;color: lightgrey;">Reply</button>  
                         <div id="delmodal<%= replies[y].id %>"  class="postmodal">
                           <div style="border: 1px solid lightgray; width: 400px;height: 175px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
                               <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>

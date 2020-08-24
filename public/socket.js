@@ -93,9 +93,11 @@ function comment(postid,fromid,fromname,to,commid) {
                 postid:postid,
                 origcommid: reporigcomm
             });
+            var origcm=document.getElementById(reporigcomm);
+
             console.log(commid);
             comminp.value='';
-            commbox.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong style="margin-left: 20px" >` + fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ msgloc +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
+            origcm.innerHTML+=`<div id="comm`+ idid +`" style="margin-top: 1px; margin-left: 10px; font-size: 15px;"><strong style="margin-left: 20px" >` + fromname +' ' +`  </strong><span style="font-weight: 350; font-size:14px;"> `+ msgloc +`</span><button onClick="delchatmodalon(`+ idid +`)" class="far fa-trash-alt del" style="color: rgb(240,240,240);font-size:13px;border:none;background-color:white;margin-left: 20px;"></button></div>
             <div id="delmodal`+ idid +`" class="postmodal">
                             <div style="width: 400px;height: 205px;position: fixed;top: 50%;left: 50%;margin-left: -190px;margin-top: -90px;border-radius: 20px; background-color: white;">
                                 <div style="text-align: center; margin-top: 30px;font-weight: 600;font-size: 16px;">Delete comment?</div>

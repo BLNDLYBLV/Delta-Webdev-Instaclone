@@ -10,6 +10,7 @@ var path         = require("path");
 var socket       = require("socket.io");
 var http         = require("http");
 var moment       = require('moment');
+var port          = process.env.PORT || 3000 ; 
 
 var server       = http.createServer(app);
 var io           = socket(server);   
@@ -626,4 +627,4 @@ app.use('/',require('./routes/main.js'));
 app.use('/account',require('./routes/account.js'));
 app.use('/users',require('./routes/users.js'));
 
-server.listen(3000);
+server.listen(port);
