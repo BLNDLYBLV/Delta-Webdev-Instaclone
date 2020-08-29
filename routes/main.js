@@ -33,7 +33,6 @@ app.get('/', (req,res) => {
 });
 
 
-
 app.get('/feed',ensureAuthenticated,async(req,res)=>{
     postcomms=[];
     notifs=[];
