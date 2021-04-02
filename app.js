@@ -606,7 +606,7 @@ io.on('connection',(socket)=>{
                     });
                 }
             }
-        });
+        });      
         if(max!=0){
             await Message.findOne({id:String(max)},(err,msg)=>{
                 if(err){
